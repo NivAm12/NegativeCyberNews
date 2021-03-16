@@ -1,17 +1,17 @@
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
-}
+}   
 
-const express = require("express")
+import express, { json, static } from "express";
 const app = express();
-const path = require('path');
-const mongoose = require("mongoose");
-const session = require('express-session')
-const routes = require('./routes');
-const passport = require('passport')
-const localStrategy = require('passport-local')
-const User = require('./models/user')
-const cors = require('cors')
+import { join } from 'path';
+import { connect, connection } from "mongoose";
+import session from 'express-session';
+import routes from './routes';
+import { initialize, session as _session, use, serializeUser, deserializeUser } from 'passport';
+import localStrategy from 'passport-local';
+import { authenticate, serializeUser as _serializeUser, deserializeUser as _deserializeUser } from './models/user';
+import cors from 'cors';
 
 const secret = process.env.SECRET || 'thisshouldbeabettersecret';
 
@@ -27,22 +27,22 @@ app.use(session({
 }))
 
 //passport configuration
-app.use(passport.initialize())
-app.use(passport.session())
-passport.use(new localStrategy(User.authenticate()))
-passport.serializeUser(User.serializeUser())
-passport.deserializeUser(User.deserializeUser())
+app.use(initialize())
+app.use(_session())
+use(new localStrategy(authenticate()))
+serializeUser(_serializeUser())
+deserializeUser(_deserializeUser())
 
 //connect to the database
-mongoose.connect(process.env.DB_URL, { 
+connect(process.env.DB_URL, { 
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
     
-const db = mongoose.connection;
+const db = connection;
 db.on("error", console.error.bind(console, "Connection error:"));
 
 app.use(cors({origin: 'localhost:5000', credentials:true }));
-app.use(express.json({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(json({ extended: true }));
+app.use(static(join(__dirname, 'public')))
 app.use('/', routes);
 
 const port = process.env.PORT || 5000;
