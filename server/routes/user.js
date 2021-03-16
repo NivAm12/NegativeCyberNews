@@ -1,3 +1,11 @@
+const express = require('express');
+const router = express.Router();
+const passport = require('passport')
+const User = require('../models/user')
+const { isLoggedIn } = require('../middleware')
+
+
+
 //GET USER
 router.get("/user", (req, res) => {
     res.send({user: req.user});
