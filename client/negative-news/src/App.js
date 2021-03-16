@@ -1,4 +1,6 @@
-import AuthForm from './components/AuthForm'
+import SignInSide from './components/AuthForm'
+import Axios from "axios";
+import { useState, useEffect } from "react";
 
 function App() {
 
@@ -7,7 +9,6 @@ function App() {
 
   useEffect(() => {
     getUser();
-    getTenants({});
   }, []);
   
   const getUser = async () => {
@@ -17,11 +18,12 @@ function App() {
 
   return (
     <div className={"container"}>
-        <AuthForm
+        {/* <AuthForm
           user={user}
           setUser={setUser}
           setMessage={setMessage}
-        />
+        /> */}
+        <SignInSide/>
       </div>
   );
 }
