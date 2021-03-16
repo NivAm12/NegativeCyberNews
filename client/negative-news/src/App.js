@@ -1,4 +1,5 @@
 import SignInSide from './components/AuthForm'
+import SignUp from './components/RegisterForm';
 import Axios from "axios";
 import { useState, useEffect } from "react";
 
@@ -23,7 +24,7 @@ function App() {
           setUser={setUser}
           setMessage={setMessage}
         /> */}
-        <SignInSide/>
+        <SignUp/>
       </div>
   );
 }
