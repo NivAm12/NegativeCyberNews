@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
+import { useHistory } from "react-router-dom";
 
 Axios.defaults.withCredentials = true
 
@@ -46,20 +46,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInSide(props) {
+export default function LoginForm(props) {
+
+  const history = useHistory();
   const classes = useStyles();
 
   const [ username, setUsername ] = useState("")
   const [ password, setPassword ] = useState("")
 
     const onLogin = async (event) => {
-
+       
         event.preventDefault()
-
         try {
             const response = await Axios.post(`http://localhost:5000/login`, {username,password})
             const { user } = response.data
             props.setUser(user)
+            history.push("/");
+
         } catch (err) {
             const { message } = err.response.data
             props.setMessage({ message , severity: "error"})
@@ -78,10 +81,10 @@ export default function SignInSide(props) {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Alert severity={props.message.severity}>{props.message.message}</Alert>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {/* <Alert severity={props.message.severity}>{props.message.message}</Alert> */}
           <form className={classes.form} onSubmit={onLogin} noValidate>
             <TextField
               variant="outlined"
@@ -115,13 +118,12 @@ export default function SignInSide(props) {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -130,6 +132,7 @@ export default function SignInSide(props) {
         </div>
       </Grid>
     </Grid>
+    
   );
 }
 

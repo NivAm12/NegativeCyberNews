@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function RegisterForm() {
   const classes = useStyles();
 
   return (

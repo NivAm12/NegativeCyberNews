@@ -11,10 +11,8 @@ export default function LandingPage(props) {
             
             const { message } = response.data
             props.setUser(null)
-            //props.setMessage({message, variant: "success"})
+            props.setMessage({message: "", variant: ""})
         } catch (err) {
-            //const { message } = err.response.data
-            //props.setMessage({ message , variant: "danger"})
             console.log("lala")
         }
     }
