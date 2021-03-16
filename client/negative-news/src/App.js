@@ -1,12 +1,13 @@
 import SignInSide from './components/AuthForm'
 import SignUp from './components/RegisterForm';
+import LandingPage from './components/LandingPage'
 import Axios from "axios";
 import { useState, useEffect } from "react";
 
 function App() {
 
   const [ user, setUser ] = useState(null);
-  const [ message, setMessage ] = useState({message:"", variant: ""});
+  const [ message, setMessage ] = useState({message:"", severity: ""});
 
   useEffect(() => {
     getUser();
@@ -18,13 +19,21 @@ function App() {
   }
 
   return (
-    <div className={"container"}>
-        {/* <AuthForm
-          user={user}
-          setUser={setUser}
-          setMessage={setMessage}
-        /> */}
-        <SignUp/>
+    <div>
+        { user ? 
+          <LandingPage
+            user={user}
+            setUser={setUser}
+            setMessage={setMessage}
+          />
+          :
+          <SignInSide
+            user={user}
+            message={message}
+            setUser={setUser}
+            setMessage={setMessage}
+          />
+        }
       </div>
   );
 }

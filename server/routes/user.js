@@ -33,5 +33,15 @@ router.get('/logout', (req,res) => {
     }
 })
 
+//run to register
+const register = () => {
+  const username = "roy"
+  const password = "roy"
+  const user = new User({ username })
+  User.register( user, password );
+}
+// register();
+
+
 
 module.exports = router;

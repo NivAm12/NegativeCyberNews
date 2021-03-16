@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
+
 Axios.defaults.withCredentials = true
 
 
@@ -44,8 +46,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInSide() {
+export default function SignInSide(props) {
   const classes = useStyles();
+
+  const [ username, setUsername ] = useState("")
+  const [ password, setPassword ] = useState("")
+
+    const onLogin = async (event) => {
+
+        event.preventDefault()
+
+        try {
+            const response = await Axios.post(`http://localhost:5000/login`, {username,password})
+            const { user } = response.data
+            props.setUser(user)
+        } catch (err) {
+            const { message } = err.response.data
+            props.setMessage({ message , severity: "error"})
+        } finally {
+            setUsername("")
+            setPassword("")
+        }
+    }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -56,10 +78,11 @@ export default function SignInSide() {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
+          <Alert severity={props.message.severity}>{props.message.message}</Alert>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={onLogin} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
@@ -68,8 +91,10 @@ export default function SignInSide() {
               id="userName"
               label="User name"
               name="userName"
+              value={username}
               autoComplete="userName"
               autoFocus
+              onChange={(event) => setUsername(event.target.value)}
             />
             <TextField
               variant="outlined"
@@ -80,7 +105,9 @@ export default function SignInSide() {
               label="Password"
               type="password"
               id="password"
+              value={password}
               autoComplete="current-password"
+              onChange={(event) => setPassword(event.target.value)}
             />
             <Button
               type="submit"
@@ -88,6 +115,7 @@ export default function SignInSide() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick
             >
               Sign In
             </Button>
