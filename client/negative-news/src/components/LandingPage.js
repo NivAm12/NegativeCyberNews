@@ -7,13 +7,11 @@ export default function LandingPage(props) {
     const onLogout = async (event) => {
         event.preventDefault()
         try {
-            const response = await Axios.get(`http://localhost:5000/logout`)
-            
-            const { message } = response.data
+            await Axios.get(`http://localhost:5000/logout`)
             props.setUser(null)
-            props.setMessage({message: "", variant: ""})
+            props.history.push('/login')
         } catch (err) {
-            console.log("lala")
+            console.log(err)
         }
     }
     return (
