@@ -33,15 +33,15 @@ router.get('/logout', (req,res) => {
     }
 })
 
-//run to register
-const register = () => {
-  const username = "roy"
-  const password = "roy"
-  const user = new User({ username })
-  User.register( user, password );
-}
-// register();
-
-
+router.post('/register', async (req,res) => {
+  try {
+    const { username, password } = req.body
+    const user = new User({ username })
+    await User.register(user, password);
+    res.send({user: req.user, message: "Successfully logged out!"})
+  } catch (err) {
+      return res.status(500).send({ message: err.message })
+  }
+})
 
 module.exports = router;
