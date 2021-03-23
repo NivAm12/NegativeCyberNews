@@ -2,9 +2,6 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport')
 const User = require('../models/user')
-const { isLoggedIn } = require('../middleware')
-
-
 
 //GET USER
 router.get("/user", (req, res) => {
@@ -38,7 +35,7 @@ router.post('/register', async (req,res) => {
     const { username, password } = req.body
     const user = new User({ username })
     await User.register(user, password);
-    res.send({user: req.user, message: "Successfully logged out!"})
+    res.send({user: req.user, message: "Successfully signed up"})
   } catch (err) {
       return res.status(500).send({ message: err.message })
   }

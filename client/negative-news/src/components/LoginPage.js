@@ -11,13 +11,17 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
+import Container from '@material-ui/core/Container';
+
 
 Axios.defaults.withCredentials = true
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
+ 
+  root: { 
+    minHeight: '10vh',
+    minWidth: '10vh',
   },
   image: {
     backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -64,6 +68,7 @@ export default function LoginForm(props) {
             props.history.push("/");
 
         } catch (err) {
+          console.log(err)
             const { message } = err.response.data
             setMessage({ message , severity: "error"})
         } finally {
@@ -73,7 +78,11 @@ export default function LoginForm(props) {
     }
 
   return (
-    <Grid container component="main" className={classes.root}>
+
+    <Container m={10} >
+    <Grid container 
+    component="main" className={classes.root}
+    >
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -132,6 +141,6 @@ export default function LoginForm(props) {
         </div>
       </Grid>
     </Grid>
-    
+    </Container>
   );
 }

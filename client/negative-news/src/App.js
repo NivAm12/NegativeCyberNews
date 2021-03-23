@@ -1,7 +1,6 @@
 import LoginPage from './components/LoginPage'
 import RegisterPage from './components/RegisterPage';
 import LandingPage from './components/LandingPage'
-import ProtectedRoute from './components/ProtectedRoute'
 import Axios from "axios";
 import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -24,11 +23,10 @@ const App = () => {
       <Switch>
         <Route exact path='/login' render={(props) => (<LoginPage {...props} user={user} setUser={setUser}/>)}/>
         <Route exact path='/register' render={(props) => (<RegisterPage {...props} user={user} setUser={setUser}/>)}/>
-        {/* <ProtectedRoute user={user} setUser={setUser} exact path='/' component={LandingPage}/> */}
         <Route
-        render={(props) => user != null 
-          ? <LandingPage user={user} setUser={setUser} {...props} />
-          : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
+          render={(props) => user != null 
+            ? <LandingPage user={user} setUser={setUser} {...props} />
+            : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
         />
       </Switch>
     </div>
