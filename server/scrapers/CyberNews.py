@@ -4,7 +4,7 @@ import time
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
-from cyberWebSearcher import CyberWebSearcher
+from WebScraper import CyberWebSearcher
 
 
 class CybernewsScraper(CyberWebSearcher):

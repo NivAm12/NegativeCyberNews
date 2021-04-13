@@ -13,14 +13,14 @@ class Parse:
         self.upguard = UpguardScraper()
 
     def start(self, searchTerm):
-        self.cyberNews.searchForCyberNews(searchTerm)
+        return self.cywareScraper.searchForCyberNews(searchTerm)
          
 
 
 
 p = Parse()
-p.start(sys.argv[1])
-print(sys.argv[1])
+result = p.start(sys.argv[1])
+print(result)
 
 
 # {
