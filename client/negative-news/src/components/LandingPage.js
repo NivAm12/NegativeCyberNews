@@ -1,15 +1,16 @@
-
 import React, { useState } from 'react'
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
 import Axios from 'axios';
 import Box from '@material-ui/core/Box';
-import TextField from '@material-ui/core/TextField';
 
 
 export default function LandingPage(props) {
 
-    const [ searchTerm, setSearchTerm ] = useState("");
-    const [ data, setData ] = useState([])
+    const [searchTerm, setSearchTerm] = useState("");
+    const [data, setData] = useState([])
 
     const onSubmit = async (event) => {
         event.preventDefault()
@@ -28,32 +29,32 @@ export default function LandingPage(props) {
             console.log(err)
         }
     }
+
     return (
         <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="50vh"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="50vh"
         >
             <form onSubmit={onSubmit}>
-                <TextField 
-                label="Search" 
-                variant="outlined" 
-                size="sm"
-                onChange={(event) => setSearchTerm(event.target.value)}
+                <InputBase
+                    placeholder="Search"
+                    autoFocus="true"
+                    alignItems="center"
+                    onChange={(event) => setSearchTerm(event.target.value)}
                 />
-                <Button 
-                variant="contained" 
-                color="primary"
-                type="submit"
+                <IconButton
+                    aria-label="search"
+                    type="submit"
                 >
-                Search
-                </Button>
+                    <SearchIcon />
+                </IconButton>
                 <Button
-                onClick={onLogout}
+                    onClick={onLogout}
                 >
                     Logout
-                </Button>
+                    </Button>
             </form>
         </Box>
     )
