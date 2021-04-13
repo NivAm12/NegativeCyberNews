@@ -14,8 +14,8 @@ export default function LandingPage(props) {
 
     const onSubmit = async (event) => {
         event.preventDefault()
-
         const response = await Axios.post("http://localhost:5000/search", { searchTerm })
+        setSearchTerm("")
         //setData(response.data.data)
     }
 
