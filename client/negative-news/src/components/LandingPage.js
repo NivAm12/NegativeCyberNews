@@ -1,63 +1,122 @@
 import React, { useState } from 'react'
+import {makeStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
 import Axios from 'axios';
-import Box from '@material-ui/core/Box';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
 
 
+const useStyles = makeStyles({
+    container: {
+        boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.2)",
+        height: "1000px",
+        background: "#f7f7f7"
+    },
+    input: {    
+        background: "white"
+    },
+    inputBar: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingBottom: "50px",
+        borderBottom: "1px solid rgba(0,0,0,0.2)"
+    },
+    logoutButton: {
+        float: "right",
+        textTransform: "none"
+    }
+})
 export default function LandingPage(props) {
+
+    const classes = useStyles()
 
     const [searchTerm, setSearchTerm] = useState("");
     const [data, setData] = useState([])
 
     const onSubmit = async (event) => {
+
+        //prevent refresh
         event.preventDefault()
+
+        //API Post request
         const response = await Axios.post("http://localhost:5000/search", { searchTerm })
-        console.log(response)
+        
+        //reset search term
         setSearchTerm("")
+
         //setData(response.data.data)
     }
 
     const onLogout = async (event) => {
+
+        //prevent refresh
         event.preventDefault()
+
         try {
+
+            //API Get request
             await Axios.get(`http://localhost:5000/logout`)
+
+            //logout user
             props.setUser(null)
+
+            //redirect to login page
             props.history.push('/login')
+
         } catch (err) {
             console.log(err)
         }
     }
 
     return (
-        <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            minHeight="50vh"
+        <Container 
+        fixed
+        className={classes.container}
         >
+            <Button
+                onClick={onLogout}
+                className={classes.logoutButton}
+                color="default"
+                startIcon={<ExitToAppIcon/>}
+            >
+                Logout
+            </Button>
+
             <form onSubmit={onSubmit}>
-                <InputBase
-                    placeholder="Search"
-                    autoFocus="true"
-                    alignItems="center"
-                    onChange={(event) => setSearchTerm(event.target.value)}
-                />
-                <IconButton
-                    aria-label="search"
-                    type="submit"
+                <Grid
+                container 
+                spacing={3}
+                className={classes.inputBar}
                 >
-                    <SearchIcon />
-                </IconButton>
-                <Button
-                    onClick={onLogout}
-                >
-                    Logout
-                    </Button>
+                    <Grid item xs={6}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            autoFocus="true"
+                            className={classes.input}
+                            value={searchTerm}
+                            onChange={(event) => setSearchTerm(event.target.value)}
+                            >
+
+                      </TextField>
+                    </Grid>
+                    <Grid >
+                        <IconButton
+                            type="submit"
+                            >
+                            <SearchIcon/>
+                        </IconButton>
+                    </Grid>
+                </Grid>
             </form>
-        </Box>
+        </Container>
     )
 }
 
