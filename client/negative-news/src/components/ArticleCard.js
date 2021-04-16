@@ -37,7 +37,7 @@ export default function ArticleCard({article}) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Link href={article.link} onClick={preventDefault}>
+                <Link href={article.link} onClick={event.preventDefault()}>
                     Link
                 </Link>
                 {/* <Button size="small">Read More</Button> */}
