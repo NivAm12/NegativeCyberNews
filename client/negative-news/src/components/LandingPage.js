@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
-
+import ArticleCard from './ArticleCard'
 
 const useStyles = makeStyles({
     container: {
@@ -39,6 +39,7 @@ export default function LandingPage(props) {
     const [searchTerm, setSearchTerm] = useState("");
     const [data, setData] = useState([])
 
+
     const onSubmit = async (event) => {
 
         //prevent refresh
@@ -50,7 +51,7 @@ export default function LandingPage(props) {
         //reset search term
         setSearchTerm("")
 
-        //setData(response.data.data)
+        setData(response.data.data)
     }
 
     const onLogout = async (event) => {
@@ -116,6 +117,11 @@ export default function LandingPage(props) {
                     </Grid>
                 </Grid>
             </form>
+            <div>
+                {data.map(article => {
+                    return <ArticleCard article={article}></ArticleCard>
+                })}
+            </div>
         </Container>
     )
 }

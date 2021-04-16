@@ -10,10 +10,9 @@ router.post("/", (req, res) => {
   ]);
 
   pythonProcess.stdout.on("data", (result) => {
-    return res.send({data : JSON.parse(result.toString())})
-
-    //return res.send(data.toString())
+    return res.send({data : JSON.parse(JSON.stringify(result.toString()))})
   });
+
   pythonProcess.stderr.on("data", (data) => {
     console.log("on error: " + data.toString());
   });
