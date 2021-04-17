@@ -13,26 +13,40 @@ import json
 
 class UpguardScraper(CyberWebSearcher):
     def __init__(self):
-        self.__url = 'https://www.upguard.com/security-reports'
-        self.__searchFieldXpath = '//*[@id="field"]'
-        self.__webdriver = None
+        self._url = 'https://www.upguard.com/security-reports'
+        self._searchFieldXpath = '//*[@id="field"]'
     
+
     def searchForCyberNews(self, searchQuery):
-        self.__startWebSession()
-        data = []
+        self._startWebSession()
+
         # start the search:
-        self.__webdriver.find_element_by_xpath(self.__searchFieldXpath).send_keys(searchQuery, Keys.RETURN)
-        time.sleep(2)
-        self.__webdriver.find_elements_by_link_text('View security report')[0].click()
-        time.sleep(4)
+        self.__search(searchQuery)
 
-        # get source
-        pageSource = self.__webdriver.page_source
-        soup = BeautifulSoup(pageSource, 'html.parser')
+        # get articles
+        articles = self.__getArticles()
 
-        # # get articles
-        articles = soup.find(class_='grid-thirds list-combine w-dyn-items').find_all(class_='w-dyn-item')
+        # end session:
+        self._webdriver.quit()
         
+        return articles
+
+
+    def __search(self, searchQuery):
+        # auto actions on driver:
+        self._webdriver.find_element_by_xpath(self._searchFieldXpath).send_keys(searchQuery, Keys.RETURN)
+        time.sleep(2)
+        self._webdriver.find_elements_by_link_text('View security report')[0].click()
+        time.sleep(4)   
+
+
+    def __getArticles(self):
+        # get source
+        pageSource = self._webdriver.page_source
+        soup = BeautifulSoup(pageSource, 'html.parser')
+        articles = soup.find(class_='grid-thirds list-combine w-dyn-items').find_all(class_='w-dyn-item')
+        data = []
+
         # add articles
         for i in range(3):
             article = {
@@ -45,9 +59,3 @@ class UpguardScraper(CyberWebSearcher):
             data.append(article)
 
         return data
-
-    def __startWebSession(self):
-        op = webdriver.ChromeOptions()
-        op.add_experimental_option('excludeSwitches', ['enable-logging'])
-        self.__webdriver = webdriver.Chrome(options=op)
-        self.__webdriver.get(self.__url)
