@@ -23,7 +23,7 @@ class CybernewsScraper(CyberWebSearcher):
         # start the search:
         self.__webdriver.find_element_by_xpath(self.__searchFieldXpath).send_keys(searchQuery, Keys.RETURN)
         
-        # # wait for results to be load:
+        # wait for results to be load:
         WebDriverWait(self.__webdriver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'jeg_block_container')))
             
