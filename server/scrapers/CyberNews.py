@@ -15,7 +15,6 @@ class CybernewsScraper(CyberWebSearcher):
     def __init__(self):
         self.__url = 'https://cybernews.com/?s='
         self.__searchFieldXpath = '/html/body/div[2]/div/div[1]/div/div/div[2]/div[1]/div/div/div[2]/form/input'
-        #self.__searchBtnXpath = '/html/body/div[2]/div/div[1]/div/div/div[2]/div[1]/div/div/div[2]/form/button' 
         self.__webdriver = None
     
     def searchForCyberNews(self, searchQuery):
@@ -25,8 +24,8 @@ class CybernewsScraper(CyberWebSearcher):
         self.__webdriver.find_element_by_xpath(self.__searchFieldXpath).send_keys(searchQuery, Keys.RETURN)
         
         # # wait for results to be load:
-        # WebDriverWait(self.__webdriver, 10).until(
-        #     EC.presence_of_element_located((By.CLASS_NAME, 'jnews_search_content_wrapperg')))
+        WebDriverWait(self.__webdriver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'jeg_block_container')))
             
         time.sleep(4)
 
@@ -45,12 +44,10 @@ class CybernewsScraper(CyberWebSearcher):
                 "date": articles[i].find(class_='jeg_meta_date').text.strip(),
                 "link": articles[i].find(class_='jeg_post_title').a.get('href')
             }
-            print(article, end='\n'*2)
 
-        #     data.append(article)
+            data.append(article)
 
-        # return data
-
+        return data
 
 
     def __startWebSession(self):
@@ -58,3 +55,7 @@ class CybernewsScraper(CyberWebSearcher):
         op.add_experimental_option('excludeSwitches', ['enable-logging'])
         self.__webdriver = webdriver.Chrome(options=op)
         self.__webdriver.get(self.__url)
+
+
+test = CybernewsScraper()
+print(test.searchForCyberNews('apple'))
