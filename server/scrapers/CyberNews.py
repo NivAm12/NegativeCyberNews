@@ -55,7 +55,3 @@ class CybernewsScraper(CyberWebSearcher):
         op.add_experimental_option('excludeSwitches', ['enable-logging'])
         self.__webdriver = webdriver.Chrome(options=op)
         self.__webdriver.get(self.__url)
-
-
-test = CybernewsScraper()
-print(test.searchForCyberNews('apple'))
