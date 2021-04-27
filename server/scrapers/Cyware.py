@@ -40,7 +40,7 @@ class CywareScraper(CyberWebSearcher):
         WebDriverWait(self._webdriver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'cy-feed-tabs')))
             
-        time.sleep(2)    
+        self._webdriver.implicitly_wait(0.5)
  
 
     def __getArticles(self):
@@ -51,7 +51,7 @@ class CywareScraper(CyberWebSearcher):
         data = []
 
         # add articles
-        for i in range(3):
+        for i in range(min(3, len(articles))):
             article = {
                 "title": articles[i].find(class_='cy-card__title m-0 cursor-pointer pb-3').text.strip(),
                 "description": articles[i].find(class_='cy-card__description').text.strip(),

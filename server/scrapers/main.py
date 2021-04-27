@@ -9,7 +9,7 @@ from Upguard import UpguardScraper
 cyberNews = CybernewsScraper()
 cyware = CywareScraper()
 upguard = UpguardScraper()
-scrapers = [cyberNews, cyware, upguard]
+scrapers = [upguard, cyberNews, cyware]
 
 def start(searchTerm):
     results = Parallel(n_jobs=-1)(delayed(search)

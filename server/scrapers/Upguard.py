@@ -48,7 +48,7 @@ class UpguardScraper(CyberWebSearcher):
         data = []
 
         # add articles
-        for i in range(3):
+        for i in range(min(3, len(articles))):
             article = {
                 "title": articles[i].find(class_='h4 mb-16').text.strip(),
                 "description": articles[i].find(class_='card-description-3-lines').text.strip(),

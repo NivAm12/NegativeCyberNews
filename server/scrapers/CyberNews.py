@@ -49,7 +49,7 @@ class CybernewsScraper(CyberWebSearcher):
         data = []
 
         # add articles
-        for i in range(3):
+        for i in range(min(3, len(articles))):
             article = {
                 "title": articles[i].find(class_='jeg_post_title').text.strip(),
                 "description": articles[i].find(class_='jeg_post_excerpt').p.text.strip(),
