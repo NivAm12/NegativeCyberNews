@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -30,15 +30,23 @@ const useStyles = makeStyles({
     logoutButton: {
         float: "right",
         textTransform: "none"
+    },
+    article: {
+        margin: "20px 20px 20px 20px"
     }
 })
+
 export default function LandingPage(props) {
 
+    const bla = [{'title': 'Cracked copies of Microsoft Office and Adobe Photoshop steal your session cookies, browser history, crypto-coins', 'description': 'Cracked copies of Microsoft Office and Adobe Photoshop are stealing browser session cookies and Monero cryptocurrency wallets from tightwads who install the pirated software, Bitdefender has warned.', 'date': 'April 14,  2021', 'link': 'https://www.theregister.com/2021/04/13/cracked_copies_of_microsoft_office/?&web_view=true'}, {'title': 'Adobe Patches Critical Code Execution Vulnerabilities in Photoshop, Bridge', 'description': 'Adobe on Tuesday announced patches for several vulnerabilities in four of its products, including critical code execution and buffer flow flaws affecting Photoshop and Bridge.', 'date': 'April 14,  2021', 'link': 'https://www.securityweek.com/adobe-patches-critical-code-execution-vulnerabilities-photoshop-bridge?&web_view=true'}, {'title': 'Critical code execution vulnerability fixed in Adobe ColdFusion', 'description': 'Adobe released ColdFusion 2016 Update 17, ColdFusion 2018 Update 11, and ColdFusion 2021 Update 1 to patch the vulnerability and said that all previous versions before these patches are vulnerable.', 'date': 'March 22,  2021', 'link': 'https://www.bleepingcomputer.com/news/security/critical-code-execution-vulnerability-fixed-in-adobe-coldfusion/?&web_view=true'}]
     const classes = useStyles()
 
     const [searchTerm, setSearchTerm] = useState("");
     const [data, setData] = useState([])
 
+    useEffect(() => {
+
+    }, [data])
 
     const onSubmit = async (event) => {
 
@@ -50,7 +58,7 @@ export default function LandingPage(props) {
         
         //reset search term
         setSearchTerm("")
-
+        console.log( typeof response.data.data)
         setData(response.data.data)
     }
 
@@ -117,9 +125,10 @@ export default function LandingPage(props) {
                     </Grid>
                 </Grid>
             </form>
+            <br></br>
             <div>
-                {data.map(article => {
-                    return <ArticleCard article={article}></ArticleCard>
+                {bla.map(article => {
+                    return <div><ArticleCard className={classes.article} article={article}></ArticleCard><br></br></div>
                 })}
             </div>
         </Container>
