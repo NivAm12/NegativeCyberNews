@@ -24,6 +24,8 @@ class CyberWebSearcher(ABC):
 
     def _startWebSession(self):
         op = webdriver.ChromeOptions()
+        op.add_argument('headless')
+        op.add_argument('window-size=1920x1080')
         op.add_experimental_option('excludeSwitches', ['enable-logging'])
         self._webdriver = webdriver.Chrome(options=op)
         self._webdriver.get(self._url)

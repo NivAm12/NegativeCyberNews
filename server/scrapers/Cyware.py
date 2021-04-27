@@ -40,7 +40,7 @@ class CywareScraper(CyberWebSearcher):
         WebDriverWait(self._webdriver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'cy-feed-tabs')))
             
-        time.sleep(4)    
+        time.sleep(2)    
  
 
     def __getArticles(self):

@@ -37,7 +37,7 @@ class UpguardScraper(CyberWebSearcher):
         self._webdriver.find_element_by_xpath(self._searchFieldXpath).send_keys(searchQuery, Keys.RETURN)
         time.sleep(2)
         self._webdriver.find_elements_by_link_text('View security report')[0].click()
-        time.sleep(4)   
+        time.sleep(2)   
 
 
     def __getArticles(self):

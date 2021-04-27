@@ -38,9 +38,7 @@ class CybernewsScraper(CyberWebSearcher):
         
         # wait for results to be load:
         WebDriverWait(self._webdriver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, 'jeg_block_container')))
-            
-        time.sleep(4)    
+            EC.presence_of_element_located((By.CLASS_NAME, 'jeg_block_container'))) 
 
 
     def __getArticles(self):
