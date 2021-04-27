@@ -54,7 +54,7 @@ export default function LandingPage(props) {
     const response = await Axios.post("http://localhost:5000/search", {
       searchTerm,
     });
-
+    setFlag(false);
     setData(response.data.data);
   };
 
@@ -109,7 +109,7 @@ export default function LandingPage(props) {
       </form>
       <br></br>
       <div>
-        {data.length == 0 && flag ? (
+        {flag ? (
           <CircularProgress />
         ) : (
           data.map((article) => {

@@ -15,6 +15,7 @@ router.post("/", (req, res) => {
 
   pythonProcess.stderr.on("data", (data) => {
     console.log("on error: " + data.toString());
+    res.send({data : [], error: "Could not find any results.."})
   });
 });
 
