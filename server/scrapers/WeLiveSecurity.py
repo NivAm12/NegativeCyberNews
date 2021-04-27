@@ -11,10 +11,10 @@ from  CyberWebSearcher import CyberWebSearcher
 import json
 
 
-class UpguardScraper(CyberWebSearcher):
+class WeLiveSecurityScraper(CyberWebSearcher):
     def __init__(self):
-        self._url = 'https://www.upguard.com/security-reports'
-        self._searchFieldXpath = '//*[@id="field"]'
+        self._url = 'https://www.welivesecurity.com/'
+        self._searchFieldXpath = '//*[@id="header-nav"]/div[2]/form/div/input'
     
 
     def searchForCyberNews(self, searchQuery):
@@ -35,27 +35,29 @@ class UpguardScraper(CyberWebSearcher):
     def __search(self, searchQuery):
         # auto actions on driver:
         self._webdriver.find_element_by_xpath(self._searchFieldXpath).send_keys(searchQuery, Keys.RETURN)
-        time.sleep(2)
-        self._webdriver.find_elements_by_link_text('View security report')[0].click()
-        time.sleep(2)   
+
+        # wait for results to be load:
+        WebDriverWait(self._webdriver, 10).until(
+            EC.presence_of_element_located((By.ID, 'news-feed')))
 
 
     def __getArticles(self):
         # get source
         pageSource = self._webdriver.page_source
         soup = BeautifulSoup(pageSource, 'html.parser')
-        articles = soup.find(class_='grid-thirds list-combine w-dyn-items').find_all(class_='w-dyn-item')
+        articles = soup.find_all(class_='news-feed-item col-xs-12 no-padding')
         data = []
 
         # add articles
         for i in range(min(3, len(articles))):
             article = {
-                "title": articles[i].find(class_='h4 mb-16').text.strip(),
-                "description": articles[i].find(class_='card-description-3-lines').text.strip(),
-                "date": articles[i].find(class_='h5 h5-subtitle w-embed').text.strip(),
-                "link": articles[i].a.get('href')
+                "title": articles[i].h2.text.strip(),
+                "description": articles[i].p.text.strip(),
+                "date": articles[i].time.text.strip(),
+                "link": articles[i].h2.a.get('href')
             }
 
             data.append(article)
-
+        
         return data
+       

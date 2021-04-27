@@ -3,13 +3,13 @@ from joblib import Parallel, delayed
 import json
 from Cyware import CywareScraper
 from CyberNews import CybernewsScraper
-from Upguard import UpguardScraper
+from WeLiveSecurity import WeLiveSecurityScraper
 
 
 cyberNews = CybernewsScraper()
 cyware = CywareScraper()
-upguard = UpguardScraper()
-scrapers = [upguard, cyberNews, cyware]
+weLiveSecurity = WeLiveSecurityScraper()
+scrapers = [weLiveSecurity, cyware, cyberNews]
 
 def start(searchTerm):
     results = Parallel(n_jobs=-1)(delayed(search)
