@@ -13,29 +13,42 @@ import json
 
 class CywareScraper(CyberWebSearcher):
     def __init__(self):
-        self.__url = 'https://cyware.com/search'
-        self.__searchFieldXpath = '//*[@id="__layout"]/div/section[2]/div/div/div[2]/div/div/div/div/div/div[1]/input'
-        self.__webdriver = None
+        self._url = 'https://cyware.com/search'
+        self._searchFieldXpath = '//*[@id="__layout"]/div/section[2]/div/div/div[2]/div/div/div/div/div/div[1]/input'
     
 
     def searchForCyberNews(self, searchQuery):
-        self.__startWebSession()
-        data = []
-        # start the search:
-        self.__webdriver.find_element_by_xpath(self.__searchFieldXpath).send_keys(searchQuery, Keys.RETURN)
-        
-        # wait for results to be load:
-        WebDriverWait(self.__webdriver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, 'cy-feed-tabs')))
-            
-        time.sleep(4)
+        self._startWebSession()
 
-        # get source
-        pageSource = self.__webdriver.page_source
-        soup = BeautifulSoup(pageSource, 'html.parser')
+        # start the search:
+        self.__search(searchQuery)
 
         # get articles
+        articles = self.__getArticles()
+
+        # end session:
+        self._webdriver.quit()
+        
+        return articles
+
+
+    def __search(self, searchQuery):
+        # auto actions on driver:
+        self._webdriver.find_element_by_xpath(self._searchFieldXpath).send_keys(searchQuery, Keys.RETURN)
+        
+        # wait for results to be load:
+        WebDriverWait(self._webdriver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'cy-feed-tabs')))
+            
+        time.sleep(4)    
+ 
+
+    def __getArticles(self):
+         # get source
+        pageSource = self._webdriver.page_source
+        soup = BeautifulSoup(pageSource, 'html.parser')
         articles = soup.find(class_='cy-feed-tabs').find_all(class_='cy-panel__body')
+        data = []
 
         # add articles
         for i in range(3):
@@ -51,8 +64,3 @@ class CywareScraper(CyberWebSearcher):
         return data
 
 
-    def __startWebSession(self):
-        op = webdriver.ChromeOptions()
-        op.add_experimental_option('excludeSwitches', ['enable-logging'])
-        self.__webdriver = webdriver.Chrome(options=op)
-        self.__webdriver.get(self.__url)
