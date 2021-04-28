@@ -15,7 +15,7 @@ import { CircularProgress } from "@material-ui/core";
 const useStyles = makeStyles({
   container: {
     boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.2)",
-    height: "2500px",
+    minHeight:"1000px",
     background: "#f7f7f7",
   },
   input: {
@@ -25,8 +25,13 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: "50px",
-    borderBottom: "1px solid rgba(0,0,0,0.2)",
+    // paddingBottom: "50px",
+    // borderBottom: "1px solid rgba(0,0,0,0.2)",
+  },
+  loadingCircle: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "50px"
   },
   logoutButton: {
     float: "right",
@@ -40,6 +45,7 @@ export default function LandingPage(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(false);
+  const [staticSearchTerm, setStaticSearchTerm] = useState("")
 
   useEffect(() => {
     console.log("use effect");
@@ -48,12 +54,16 @@ export default function LandingPage(props) {
   const onSubmit = async (event) => {
     //prevent refresh
     event.preventDefault();
+
     setFlag(true);
     setData([]);
+
     //API Post request
     const response = await Axios.post("http://localhost:5000/search", {
       searchTerm,
     });
+
+    setStaticSearchTerm(searchTerm)
     setFlag(false);
     setData(response.data.data);
   };
@@ -78,12 +88,14 @@ export default function LandingPage(props) {
 
   return (
     <Container fixed className={classes.container}>
+      <div style={{background:'rgba(0,0,0,0.05)', paddingBottom: "50px", borderBottom: "3px solid rgba(0,0,0,1)"}}>
+
       <Button
         onClick={onLogout}
         className={classes.logoutButton}
         color="default"
         startIcon={<ExitToAppIcon />}
-      >
+        >
         Logout
       </Button>
 
@@ -95,10 +107,11 @@ export default function LandingPage(props) {
               required
               fullWidth
               autoFocus="true"
+              placeholder="Search for a company name"
               className={classes.input}
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-            ></TextField>
+              ></TextField>
           </Grid>
           <Grid>
             <IconButton type="submit">
@@ -107,10 +120,14 @@ export default function LandingPage(props) {
           </Grid>
         </Grid>
       </form>
+    </div>
       <br></br>
       <div>
+        {!flag & data.length != 0 ? <h1>Search results for '{staticSearchTerm}'</h1> : null}
         {flag ? (
-          <CircularProgress />
+          <div className={classes.loadingCircle}>
+            <CircularProgress size="5rem"/>
+          </div>
         ) : (
           data.map((article) => {
             return (

@@ -37,7 +37,7 @@ export default function ArticleCard({article}) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" href={article.link} target="_blank">Read More</Button>
+                <Button variant="contained" color="primary" size="small" href={article.link} target="_blank">Read More</Button>
             </CardActions>
         </Card>
     )
