@@ -7,12 +7,12 @@ from WeLiveSecurity import WeLiveSecurityScraper
 
 
 cyberNews = CybernewsScraper()
-# cyware = CywareScraper()
+cyware = CywareScraper()
 weLiveSecurity = WeLiveSecurityScraper()
 scrapers = [weLiveSecurity, cyberNews]
 
 def start(searchTerm):
-    results = Parallel(n_jobs=2, prefer="threads")(delayed(search)
+    results = Parallel(n_jobs=-1, prefer="threads")(delayed(search)
                     (scraper=scraper, searchTerm=searchTerm) for scraper in scrapers)
 
     return results                    

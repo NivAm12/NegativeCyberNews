@@ -88,7 +88,7 @@ class WeLiveSecurityScraper(CyberWebSearcher):
         #get articles
         return self.__getArticles(soup)
 
-    def __getArticles(self,soup):
+    def __getArticles(self, soup):
 
         #for nivos - these lines are also the same for every class
         articles = soup.find_all(class_=self._class)
@@ -107,6 +107,7 @@ class WeLiveSecurityScraper(CyberWebSearcher):
             }
 
             data.append(article)
+            
         
         return data
        
