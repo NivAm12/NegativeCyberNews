@@ -11,18 +11,20 @@ class CyberNewsSearcher():
         self.__aritclesBuild = articlesMethod
     
     def searchForCyberNews(self, searchQuery):
+        try:
+            #parse URL
+            url = self.__url + urllib.parse.quote_plus(searchQuery)
 
-        #parse URL
-        url = self.__url + urllib.parse.quote_plus(searchQuery)
+            #get request
+            response = requests.get(url)
 
-        #get request
-        response = requests.get(url)
+            #soup the response
+            soup = BeautifulSoup(response.text, 'lxml')
 
-        #soup the response
-        soup = BeautifulSoup(response.text, 'lxml')
-
-        #get articles
-        return self.__getArticles(soup)
+            #get articles
+            return self.__getArticles(soup)
+        except:
+            return []    
 
     def __getArticles(self, soup):
 

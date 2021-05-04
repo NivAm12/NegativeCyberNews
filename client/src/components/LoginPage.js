@@ -22,7 +22,7 @@ export default function LoginForm(props) {
 
   const [ username, setUsername ] = useState("")
   const [ password, setPassword ] = useState("")
-  const [ message, setMessage ] = useState({message:"", severity: ""});
+  const [ message, setMessage ] = useState("");
 
     const onLogin = async (event) => {
        
@@ -36,9 +36,8 @@ export default function LoginForm(props) {
         } catch (err) {
           console.log(err)
             const { message } = err.response.data
-            setMessage({ message , severity: "error"})
+            setMessage(message)
         } finally {
-            setUsername("")
             setPassword("")
         }
     }
@@ -56,7 +55,7 @@ export default function LoginForm(props) {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Alert severity={message.severity}>{message.message}</Alert>
+          {message ? <Alert severity='error'>{message}</Alert> : null}
           <form className={classes.form} onSubmit={onLogin} noValidate>
             <TextField
               variant="outlined"

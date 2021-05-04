@@ -7,53 +7,61 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import ClearIcon from '@material-ui/icons/Clear';
+import ClearIcon from "@material-ui/icons/Clear";
 import ArticleCard from "./ArticleCard";
 import { CircularProgress } from "@material-ui/core";
-import Typography from '@material-ui/core/Typography';
-import {useStyles} from '../styles/LandingPage'
+import Typography from "@material-ui/core/Typography";
+import { useStyles } from "../styles/LandingPage";
 
 export default function LandingPage(props) {
   const classes = useStyles();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [staticSearchTerm, setStaticSearchTerm] = useState("")
+  const [staticSearchTerm, setStaticSearchTerm] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(true);
 
   useEffect(() => {}, [data]);
 
   const onSubmit = async (event) => {
-
     //prevent refresh
     event.preventDefault();
+    try {
+      //display loading circle
+      setLoading(true);
 
-    //display loading circle
-    setLoading(true);
+      // reset result status
+      setResult(true);
 
-    //reset data
-    setData([]);
+      //reset data
+      setData([]);
 
-    //API Post request
-    const response = await Axios.post("http://localhost:5000/search", { searchTerm });
+      //API Post request
+      const response = await Axios.post("http://localhost:5000/search", {
+        searchTerm,
+      });
 
-    //set head title
-    setStaticSearchTerm(searchTerm)
+      //set head title
+      setStaticSearchTerm(searchTerm);
 
-    //hide loading circle
-    setLoading(false);
+      //hide loading circle
+      setLoading(false);
 
-    //set data
-    setData(response.data.data);
+      //set data
+      setData(response.data.data);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      setResult(false);
+    }
   };
 
   const onLogout = async (event) => {
-
     //prevent refresh
     event.preventDefault();
 
     try {
-
       //API Get request
       await Axios.get(`http://localhost:5000/logout`);
 
@@ -62,12 +70,9 @@ export default function LandingPage(props) {
 
       //redirect to login page
       props.history.push("/login");
-
     } catch (err) {
-      
       //error handling
       console.log(err);
-
     }
   };
 
@@ -79,26 +84,31 @@ export default function LandingPage(props) {
           className={classes.logoutButton}
           color="default"
           startIcon={<ExitToAppIcon />}
-          >
+        >
           Logout
         </Button>
-        <Typography variant="h2" className={classes.title}>Negative Cyber News</Typography>
-        <Typography variant="h8" className={classes.subtext}>
-          Negative Cyber News is an API tool that will get you the latest cyber news of a company of your interest
-          by scraping relevant websites
+        <Typography variant="h2" className={classes.title}>
+          Negative Cyber News
         </Typography>
-        <Typography variant="h6" className={classes.getStarted}>Get started by typing in a company name:</Typography>
+        <Typography variant="h8" className={classes.subtext}>
+          Negative Cyber News is an API tool that will get you the latest cyber
+          news of a company of your interest by scraping relevant websites
+        </Typography>
+        <Typography variant="h6" className={classes.getStarted}>
+          Get started by typing in a company name:
+        </Typography>
         <form onSubmit={onSubmit}>
           <Grid container spacing={3} className={classes.inputBar}>
-          { searchTerm ?  
+            {searchTerm ? (
               <Grid>
                 <IconButton
-                  style={{padding: "1px"}}
-                    onClick={() => setSearchTerm("")}
-                  ><ClearIcon/>
+                  style={{ padding: "1px" }}
+                  onClick={() => setSearchTerm("")}
+                >
+                  <ClearIcon />
                 </IconButton>
-              </Grid> 
-            : null }
+              </Grid>
+            ) : null}
             <Grid item xs={6}>
               <TextField
                 variant="outlined"
@@ -110,8 +120,7 @@ export default function LandingPage(props) {
                 className={classes.input}
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                >
-                </TextField>
+              ></TextField>
             </Grid>
 
             <Grid>
@@ -123,11 +132,22 @@ export default function LandingPage(props) {
         </form>
       </div>
       <div className={classes.body}>
-        {!loading & data.length != 0 ? <h1>Search results for '{staticSearchTerm}'</h1> : null}
-        {!loading & !data.length ? <Typography className={classes.searchResultText}>Search results will appear here</Typography> : null}
+        {!loading & (data.length != 0) ? (
+          <h1>Search results for '{staticSearchTerm}'</h1>
+        ) : null}
+        {!loading & !data.length & !result ? (
+          <Typography className={classes.searchResultText}>
+            There are no results
+          </Typography>
+        ) : null}
+        {!loading & !data.length & result ? (
+          <Typography className={classes.searchResultText}>
+            Search results will appear here
+          </Typography>
+        ) : null}
         {loading ? (
           <div className={classes.loadingCircle}>
-            <CircularProgress size="5rem"/>
+            <CircularProgress size="5rem" />
           </div>
         ) : (
           data.map((article) => {

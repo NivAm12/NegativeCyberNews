@@ -12,8 +12,11 @@ scrapers = [weLiveSecurity, cyberNews, threatPost]
 def start(searchTerm):
     results = Parallel(n_jobs=-1, prefer="threads")(delayed(search)
                     (scraper=scraper, searchTerm=searchTerm) for scraper in scrapers)
-
-    return results                    
+    #[[][]]
+    articles = [item for sublist in results for item in sublist]
+    if not articles:
+        raise Exception()
+    return articles                   
 
 
 def search(scraper, searchTerm):
@@ -21,8 +24,7 @@ def search(scraper, searchTerm):
 
 
 # articles = search(weLiveSecurity, sys.argv[1])
-results = start(sys.argv[1])
-articles = [item for sublist in results for item in sublist]
+articles = start(sys.argv[1])
 print(json.dumps(articles))
 
 
