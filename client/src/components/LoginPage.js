@@ -18,16 +18,14 @@ Axios.defaults.withCredentials = true
 
 
 const useStyles = makeStyles((theme) => ({
- 
   root: { 
-    minHeight: '10vh',
-    minWidth: '10vh',
+    margin: "100px auto"
   },
   image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundImage: 'url(https://source.unsplash.com/collection/10629546)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
@@ -78,12 +76,10 @@ export default function LoginForm(props) {
     }
 
   return (
-
-    <Container m={10} >
-    <Grid container 
-    component="main" className={classes.root}
-    >
+    <Container fixed className={classes.root}>
       <CssBaseline />
+
+      <Grid container>
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
@@ -140,7 +136,7 @@ export default function LoginForm(props) {
           </form>
         </div>
       </Grid>
-    </Grid>
-    </Container>
-  );
+      </Grid>
+      </Container>  
+      );
 }

@@ -44,6 +44,7 @@ export default function RegisterForm(props) {
        
     event.preventDefault()
     try {
+        
         const response = await Axios.post(`http://localhost:5000/register`, {username,password})
         const { user } = response.data
         props.setUser(user)
@@ -60,7 +61,7 @@ export default function RegisterForm(props) {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
+      {/* <CssBaseline /> */}
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

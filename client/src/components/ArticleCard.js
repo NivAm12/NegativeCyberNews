@@ -10,6 +10,7 @@ import Link from '@material-ui/core/Link';
 const useStyles = makeStyles({
     root: {
       minWidth: 275,
+      marginBottom: "15px"
     },
     title: {
       fontSize: 14,

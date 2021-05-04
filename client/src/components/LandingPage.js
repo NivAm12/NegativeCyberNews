@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
@@ -8,82 +7,11 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import Divider from "@material-ui/core/Divider";
+import ClearIcon from '@material-ui/icons/Clear';
 import ArticleCard from "./ArticleCard";
 import { CircularProgress } from "@material-ui/core";
 import Typography from '@material-ui/core/Typography';
-
-
-const useStyles = makeStyles({
-  container: {
-    boxShadow: "0px 0px 16px rgba(0, 0, 0, 0.2)",
-    minHeight:"1000px",
-    background: "#f7f7f7",
-    padding: "0 0 0 0"
-  }, 
-  header: {
-    background:'rgba(0,0,0,0.03)', 
-    paddingBottom: "30px", 
-    borderBottom: "3px solid rgba(0,0,0,1)",
-    paddingRight: "20px",
-    paddingLeft: "20px"
-  },
-  title:{
-    fontSize: "5rem",
-    color: "#3f51b5",
-    fontWeight: "bold",
-    display: "flex",
-    justifyContent: "center",
-    textShadow: "5px 0 black"
-  },
-  subtext: {
-    display: "flex",
-    marginBottom: "15px",
-    width: "60em",
-    margin: "auto auto",
-    textAlign: "center",
-    verticalAlign: "middle"
-  },
-  getstarted: {
-    fontWeight: "bold",
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: "10px"
-
-  },
-  body: {
-    padding: "30px 30px"
-  },
-  input: {
-    background: "white"
-  },
-  inputBar: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  searchButton: {
-    color: "white", 
-    background: "#3f51b5"
-  },
-  logoutButton: {
-    float: "right",
-    textTransform: "none"
-  },
-  searchResultText: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: "50px",
-    opacity: "20%",
-    fontSize: "2rem",
-    fontWeight: "normal"
-  },
-  loadingCircle: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: "50px"
-  },
-});
+import {useStyles} from '../styles/LandingPage'
 
 export default function LandingPage(props) {
   const classes = useStyles();
@@ -146,6 +74,7 @@ export default function LandingPage(props) {
   return (
     <Container fixed className={classes.container}>
       <div className={classes.header}>
+        {/* <Typography style={{float:"right"}}>Hey {props.user.username}</Typography> */}
         <Button
           onClick={onLogout}
           className={classes.logoutButton}
@@ -156,13 +85,21 @@ export default function LandingPage(props) {
         </Button>
         <Typography variant="h2" className={classes.title}>NCN</Typography>
         <Typography variant="h8" className={classes.subtext}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-          when an unknown printer took a galley of type and scrambled it to make a type specimen book
+          Negative Cyber News is an API tool that will get you the latest cyber news of a company of your interest
+          by scraping relevant websites
         </Typography>
-        <Typography variant="h6" className={classes.getstarted}>Get started by typing in a company name:</Typography>
+        <Typography variant="h6" className={classes.getStarted}>Get started by typing in a company name:</Typography>
         <form onSubmit={onSubmit}>
           <Grid container spacing={3} className={classes.inputBar}>
+          { searchTerm ?  
+              <Grid>
+                <IconButton
+                  style={{padding: "1px"}}
+                    onClick={() => setSearchTerm("")}
+                  ><ClearIcon/>
+                </IconButton>
+              </Grid> 
+            : null }
             <Grid item xs={6}>
               <TextField
                 variant="outlined"
@@ -174,8 +111,10 @@ export default function LandingPage(props) {
                 className={classes.input}
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                ></TextField>
+                >
+                </TextField>
             </Grid>
+            
             <Grid>
               <IconButton className={classes.searchButton} type="submit">
                 <SearchIcon />
@@ -196,7 +135,6 @@ export default function LandingPage(props) {
             return (
               <div>
                 <ArticleCard article={article}></ArticleCard>
-                <br></br>
               </div>
             );
           })
