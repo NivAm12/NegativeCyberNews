@@ -12,7 +12,7 @@ const App = () => {
   useEffect(() => {
     getUser();
   }, []);
-  
+
   const getUser = async () => {
     const response = await Axios.get("http://localhost:5000/user")
     setUser(response.data.user)
