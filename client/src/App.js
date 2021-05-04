@@ -7,27 +7,26 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 const App = () => {
 
-  const [ user, setUser ] = useState(null);
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
   const getUser = async () => {
     const response = await Axios.get("http://localhost:5000/user")
-    setUser(response.data.user)
+    return response.data.user;
   }
 
   return (
     <div>
       <Switch>
-        <Route exact path='/login' render={(props) => (<LoginPage {...props} user={user} setUser={setUser}/>)}/>
-        <Route exact path='/register' render={(props) => (<RegisterPage {...props} user={user} setUser={setUser}/>)}/>
-        <Route
-          render={(props) => user != null 
-            ? <LandingPage user={user} setUser={setUser} {...props} />
+        <Route exact path='/'
+          render={(props) => getUser() != null 
+            ? <LandingPage {...props} />
             : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
         />
+        <Route exact path='/login'
+          render={(props) => getUser() != null
+            ? <Redirect to={{pathname: '/', state: {from: props.location}}} />
+            : <LoginPage {...props} />}
+        />
+        {/* <Route exact path='/login' render={(props) => (<LoginPage {...props}/>)}/> */}
+        <Route exact path='/register' render={(props) => (<RegisterPage {...props}/>)}/>
       </Switch>
     </div>
   )

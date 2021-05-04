@@ -68,9 +68,6 @@ export default function LandingPage(props) {
     try {
       //API Get request
       await Axios.get(`http://localhost:5000/logout`);
-
-      //logout user
-      props.setUser(null);
     } finally {
       //redirect to login page
       props.history.push("/login");

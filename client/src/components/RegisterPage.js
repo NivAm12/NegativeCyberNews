@@ -26,11 +26,7 @@ export default function RegisterForm(props) {
     try {
         
       //API post request
-      const response = await Axios.post(`http://localhost:5000/register`, {username,password})
-
-      console.log(response.data.user)
-      //set user
-      props.setUser(response.data.user)
+      await Axios.post(`http://localhost:5000/register`, {username,password})
 
       //redirect to 
       props.history.push("/");

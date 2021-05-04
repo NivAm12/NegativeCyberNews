@@ -4,8 +4,6 @@ if (process.env.NODE_ENV !== "production") {
 
 const express = require("express")
 const app = express();
-const fs = require('fs')
-const https = require('https')
 const path = require('path');
 const mongoose = require("mongoose");
 const session = require('express-session')
@@ -50,14 +48,6 @@ app.use('/', routes);
 app.use('/search', searchRoute);
 
 const port = process.env.PORT || 5000;
-
-// https.createServer({
-//     key: fs.readFileSync('server.key'),
-//     cert: fs.readFileSync('server.cert')
-//   }, app)
-//   .listen(port, () => {
-//     console.log(`Listening on port ${port}`)
-//   })
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)

@@ -29,10 +29,7 @@ export default function LoginForm(props) {
         try {
 
           //API post request
-          const response = await Axios.post(`http://localhost:5000/login`, {username,password})
-
-          //set the user
-          props.setUser(response.data.user)
+          await Axios.post(`http://localhost:5000/login`, {username,password})
 
           //redirect to the main page
           props.history.push("/");
