@@ -14,7 +14,6 @@ router.post("/", (req, res) => {
   });
 
   pythonProcess.stderr.on("data", (data) => {
-    console.log("sdfsdf")
     return res.status(500).send({ message: "Could not find any results.."})
   });
 });

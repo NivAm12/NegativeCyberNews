@@ -68,11 +68,9 @@ export default function LandingPage(props) {
       //logout user
       props.setUser(null);
 
+    } finally{
       //redirect to login page
       props.history.push("/login");
-    } catch (err) {
-      //error handling
-      console.log(err);
     }
   };
 

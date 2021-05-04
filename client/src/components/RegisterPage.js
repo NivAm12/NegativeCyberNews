@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {useStyles} from '../styles/RegisterPage'
@@ -17,7 +18,7 @@ export default function RegisterForm(props) {
 
   const [ username, setUsername ] = useState("")
   const [ password, setPassword ] = useState("")
-  const [ message, setMessage ] = useState({message:"", severity: ""});
+  const [ message, setMessage ] = useState("");
 
   const onRegister = async (event) => {
        
@@ -30,10 +31,8 @@ export default function RegisterForm(props) {
         props.history.push("/");
 
     } catch (err) {
-        const { message } = err.response.data
-        setMessage({ message , severity: "error"})
+        setMessage(err.response.data.message)
     } finally {
-        setUsername("")
         setPassword("")
     }
 }
@@ -48,6 +47,7 @@ export default function RegisterForm(props) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+        {message ? <Alert severity='error'>{message}</Alert> : null}
         <form className={classes.form} onSubmit={onRegister} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>

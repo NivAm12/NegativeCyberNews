@@ -26,10 +26,11 @@ router.get('/logout', (req,res) => {
         req.logout();
         res.send({ message: "Successfully logged out!"})
     } catch (err) {
-        return res.status(500).send({ message: err.message })
+        return res.status(500)
     }
 })
 
+// REGISTER
 router.post('/register', async (req,res) => {
   try {
     const { username, password } = req.body
