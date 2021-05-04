@@ -1,18 +1,16 @@
 import sys
 from joblib import Parallel, delayed
 import json
-from Cyware import CywareScraper
-from CyberNews import CybernewsScraper
-from WeLiveSecurity import WeLiveSecurityScraper
+from scrapersFactory import ScrapersOptions, scrapersFactory
 
 
-cyberNews = CybernewsScraper()
-# cyware = CywareScraper()
-weLiveSecurity = WeLiveSecurityScraper()
-scrapers = [weLiveSecurity, cyberNews]
+cyberNews = scrapersFactory(ScrapersOptions.cyberNews)
+threatPost = scrapersFactory(ScrapersOptions.threatPost)
+weLiveSecurity = scrapersFactory(ScrapersOptions.weLiveSecurity)
+scrapers = [weLiveSecurity, cyberNews, threatPost]
 
 def start(searchTerm):
-    results = Parallel(n_jobs=2, prefer="threads")(delayed(search)
+    results = Parallel(n_jobs=-1, prefer="threads")(delayed(search)
                     (scraper=scraper, searchTerm=searchTerm) for scraper in scrapers)
 
     return results                    
