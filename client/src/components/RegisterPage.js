@@ -7,30 +7,9 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {useStyles} from '../styles/RegisterPage'
 import Axios from 'axios'
-
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
 
 export default function RegisterForm(props) {
 
@@ -61,7 +40,7 @@ export default function RegisterForm(props) {
 
   return (
     <Container component="main" maxWidth="xs">
-      {/* <CssBaseline /> */}
+      <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -80,6 +59,7 @@ export default function RegisterForm(props) {
                 label="User name"
                 name="UserName"
                 autoComplete="UserName"
+                className={classes.input}
                 onChange={(event) => setUsername(event.target.value)}
               />
             </Grid>
@@ -93,6 +73,7 @@ export default function RegisterForm(props) {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                className={classes.input}
                 onChange={(event) => setPassword(event.target.value)}
               />
             </Grid>

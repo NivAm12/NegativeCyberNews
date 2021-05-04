@@ -2,41 +2,32 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
     container: {
-      boxShadow: "0px 0px 1px rgba(0, 0, 0, 0.2)",
       minHeight:"1000px",
-      background: "#f7f7f7",
       padding: "0 0",
-      minWidth:"1500px"
+      minWidth:"1300px",
     }, 
     header: {
-      background:'rgba(0,0,0,0.03)', 
-      // paddingBottom: "30px", 
       borderBottom: "3px solid rgba(0,0,0,1)",
       padding: "5px 30px 30px 30px"
-      // paddingRight: "20px",
-      // paddingLeft: "20px"
     },
     title:{
-      fontSize: "5rem",
-      color: "#3f51b5",
+      fontSize: "7rem",
+      color: "#c91818",
       fontWeight: "bold",
-      // display: "flex",
-      // justifyContent: "center",
+      fontFamily: "Yanone Kaffeesatz, sans-serif",
       letterSpacing: "4px",
       textShadow: "5px 0 black"
     },
     subtext: {
-      // display: "flex",
       marginBottom: "15px",
       maxWidth: "60px",
-      // margin: "auto auto",
       textAlign: "center",
-      verticalAlign: "middle"
+      verticalAlign: "middle",
+      fontSize: "17px",
     },
     getStarted: {
       fontWeight: "bold",
-      // display: "flex",
-      // justifyContent: "center",
+      fontSize: "27px",
       marginBottom: "10px"
   
     },
@@ -47,23 +38,22 @@ const useStyles = makeStyles({
       background: "white"
     },
     inputBar: {
-      // display: "flex",
-      // justifyContent: "center",
       alignItems: "center"
     },
     searchButton: {
       color: "white", 
-      background: "#3f51b5"
+      background: "#c91818"
     },
     logoutButton: {
       float: "right",
       textTransform: "none"
     },
     searchResultText: {
+      color: "black",
       display: "flex",
       justifyContent: "center",
       marginTop: "50px",
-      opacity: "20%",
+      opacity: "70%",
       fontSize: "2rem",
       fontWeight: "500"
     },

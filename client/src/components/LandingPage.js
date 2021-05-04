@@ -74,7 +74,6 @@ export default function LandingPage(props) {
   return (
     <Container fixed className={classes.container}>
       <div className={classes.header}>
-        {/* <Typography style={{float:"right"}}>Hey {props.user.username}</Typography> */}
         <Button
           onClick={onLogout}
           className={classes.logoutButton}
@@ -83,7 +82,7 @@ export default function LandingPage(props) {
           >
           Logout
         </Button>
-        <Typography variant="h2" className={classes.title}>NCN</Typography>
+        <Typography variant="h2" className={classes.title}>Negative Cyber News</Typography>
         <Typography variant="h8" className={classes.subtext}>
           Negative Cyber News is an API tool that will get you the latest cyber news of a company of your interest
           by scraping relevant websites
@@ -114,7 +113,7 @@ export default function LandingPage(props) {
                 >
                 </TextField>
             </Grid>
-            
+
             <Grid>
               <IconButton className={classes.searchButton} type="submit">
                 <SearchIcon />
