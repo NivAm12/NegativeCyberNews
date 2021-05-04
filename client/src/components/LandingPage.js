@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { useStyles } from "../styles/LandingPage";
 
 export default function LandingPage(props) {
+
   const classes = useStyles();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,6 +28,7 @@ export default function LandingPage(props) {
   const onSubmit = async (event) => {
     //prevent refresh
     event.preventDefault();
+
     try {
       //display loading circle
       setLoading(true);
@@ -50,10 +52,12 @@ export default function LandingPage(props) {
 
       //set data
       setData(response.data.data);
+
     } catch (err) {
-      console.log(err);
-      setLoading(false);
       setResult(false);
+
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,8 +71,7 @@ export default function LandingPage(props) {
 
       //logout user
       props.setUser(null);
-
-    } finally{
+    } finally {
       //redirect to login page
       props.history.push("/login");
     }
@@ -88,7 +91,7 @@ export default function LandingPage(props) {
         <Typography variant="h2" className={classes.title}>
           Negative Cyber News
         </Typography>
-        <Typography variant="h8" className={classes.subtext}>
+        <Typography variant="h6" className={classes.subtext}>
           Negative Cyber News is an API tool that will get you the latest cyber
           news of a company of your interest by scraping relevant websites
         </Typography>
@@ -100,7 +103,7 @@ export default function LandingPage(props) {
             {searchTerm ? (
               <Grid>
                 <IconButton
-                  style={{ padding: "1px" }}
+                  className={classes.clear}
                   onClick={() => setSearchTerm("")}
                 >
                   <ClearIcon />
@@ -113,7 +116,7 @@ export default function LandingPage(props) {
                 required
                 fullWidth
                 size="small"
-                autoFocus="true"
+                autoFocus={true}
                 placeholder="Search for a company name"
                 className={classes.input}
                 value={searchTerm}
@@ -129,20 +132,29 @@ export default function LandingPage(props) {
           </Grid>
         </form>
       </div>
+      
       <div className={classes.body}>
-        {!loading & (data.length != 0) ? (
-          <h1>Search results for '{staticSearchTerm}'</h1>
-        ) : null}
-        {!loading & !data.length & !result ? (
-          <Typography className={classes.searchResultText}>
-            There are no results
-          </Typography>
-        ) : null}
+
+        {/* initial search result text */}
         {!loading & !data.length & result ? (
           <Typography className={classes.searchResultText}>
             Search results will appear here
           </Typography>
         ) : null}
+
+        {/* search results text */}
+        {!loading & (data.length !== 0) ? (
+          <h1>Search results for '{staticSearchTerm}'</h1>
+        ) : null}
+
+        {/* no results text */}
+        {!loading & !data.length & !result ? (
+          <Typography className={classes.searchResultText}>
+            There are no results
+          </Typography>
+        ) : null}
+        
+        {/* loading circle */}
         {loading ? (
           <div className={classes.loadingCircle}>
             <CircularProgress size="5rem" />

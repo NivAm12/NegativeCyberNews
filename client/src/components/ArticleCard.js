@@ -4,7 +4,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import {useStyles} from '../styles/ArtcileCard'
+import {useStyles} from '../styles/ArticleCard'
 
 export default function ArticleCard({article}) {
 
@@ -24,7 +24,15 @@ export default function ArticleCard({article}) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button variant="contained" className={classes.readMore} size="small" href={article.link} target="_blank">Read More</Button>
+                <Button 
+                    variant="contained" 
+                    className={classes.readMore} 
+                    size="small" 
+                    href={article.link} 
+                    target="_blank"
+                    >
+                        Read More
+                </Button>
             </CardActions>
         </Card>
     )

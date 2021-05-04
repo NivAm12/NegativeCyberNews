@@ -25,10 +25,15 @@ export default function RegisterForm(props) {
     event.preventDefault()
     try {
         
-        const response = await Axios.post(`http://localhost:5000/register`, {username,password})
-        const { user } = response.data
-        props.setUser(user)
-        props.history.push("/");
+      //API post request
+      const response = await Axios.post(`http://localhost:5000/register`, {username,password})
+
+      console.log(response.data.user)
+      //set user
+      props.setUser(response.data.user)
+
+      //redirect to 
+      props.history.push("/");
 
     } catch (err) {
         setMessage(err.response.data.message)

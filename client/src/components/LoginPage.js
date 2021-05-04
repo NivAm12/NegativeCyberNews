@@ -13,7 +13,6 @@ import Alert from '@material-ui/lab/Alert';
 import Container from '@material-ui/core/Container';
 import {useStyles} from '../styles/LoginPage'
 
-
 Axios.defaults.withCredentials = true
 
 export default function LoginForm(props) {
@@ -28,13 +27,19 @@ export default function LoginForm(props) {
        
         event.preventDefault()
         try {
-            const response = await Axios.post(`http://localhost:5000/login`, {username,password})
-            const { user } = response.data
-            props.setUser(user)
-            props.history.push("/");
+
+          //API post request
+          const response = await Axios.post(`http://localhost:5000/login`, {username,password})
+
+          //set the user
+          props.setUser(response.data.user)
+
+          //redirect to the main page
+          props.history.push("/");
 
         } catch (err) {
             setMessage(err.response.data.message)
+
         } finally {
             setPassword("")
         }
@@ -44,63 +49,66 @@ export default function LoginForm(props) {
     <Container fixed className={classes.root}>
       <CssBaseline />
       <Grid container>
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          {message ? <Alert severity='error'>{message}</Alert> : null}
-          <form className={classes.form} onSubmit={onLogin} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="userName"
-              label="User name"
-              name="userName"
-              value={username}
-              autoComplete="userName"
-              autoFocus
-              onChange={(event) => setUsername(event.target.value)}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              value={password}
-              autoComplete="current-password"
-              onChange={(event) => setPassword(event.target.value)}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-      </Grid>
-      </Grid>
+        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+          <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <div className={classes.paper}>
+              <Avatar className={classes.avatar}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+
+              {/* display error message */}
+              {message ? <Alert severity='error'>{message}</Alert> : null}
+
+              <form className={classes.form} onSubmit={onLogin} noValidate>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="userName"
+                  label="User name"
+                  name="userName"
+                  value={username}
+                  autoComplete="userName"
+                  autoFocus={true}
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  value={password}
+                  autoComplete="current-password"
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item>
+                    <Link href="/register" variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+                </Grid>
+              </form>
+            </div>
+          </Grid>
+        </Grid>
       </Container>  
-      );
+    );
 }
