@@ -29,7 +29,7 @@ class CyberNewsSearcher():
     def __getArticles(self, soup):
 
         # scrape articles:
-        articles = soup.find_all(class_=self.____articleClass)
+        articles = soup.find_all(class_=self.__articleClass)
         data = self.__aritclesBuild(articles)
 
         return data  

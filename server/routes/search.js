@@ -13,7 +13,8 @@ router.post("/", (req, res) => {
     return res.send({data : JSON.parse(result.toString())})
   });
 
-  pythonProcess.stderr.on("data", (data) => {
+  pythonProcess.stderr.on("data", (error) => {
+    console.log(error.toString())
     return res.status(500).send({ message: "Could not find any results.."})
   });
 });

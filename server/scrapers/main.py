@@ -2,7 +2,7 @@ import sys
 from joblib import Parallel, delayed
 import json
 from scrapersFactory import ScrapersOptions, scrapersFactory
-
+ 
 
 cyberNews = scrapersFactory(ScrapersOptions.cyberNews)
 threatPost = scrapersFactory(ScrapersOptions.threatPost)
@@ -15,7 +15,7 @@ def start(searchTerm):
     #[[][]]
     articles = [item for sublist in results for item in sublist]
     if not articles:
-        raise Exception()
+        raise Exception("no articles")
     return articles                   
 
 
