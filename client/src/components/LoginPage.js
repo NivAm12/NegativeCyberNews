@@ -1,5 +1,4 @@
-import Axios from 'axios';
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,38 +10,91 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Alert from '@material-ui/lab/Alert';
 import Container from '@material-ui/core/Container';
-import {useStyles} from '../styles/LoginPage'
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../actions/authActions";
 
-Axios.defaults.withCredentials = true
+const classes = {
+  root: { 
+    margin: "100px auto"
+  },
+  image: {
+    backgroundImage: 'url(https://source.unsplash.com/collection/10629546)',
+    backgroundRepeat: 'no-repeat',
+    // backgroundColor:
+    // theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  paper: {
+    // margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    // margin: theme.spacing(1),
+    // backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    // marginTop: theme.spacing(1),
+  },
+  submit: {
+    // margin: theme.spacing(3, 0, 2),
+  },
+}
 
-export default function LoginForm(props) {
 
-  const classes = useStyles();
+class Login extends Component {
+  constructor() {
+    super();
+    this.state = {
+      username: "",
+      password: "",
+      errors: {},
+      message: ""
+    };
+  }
 
-  const [ username, setUsername ] = useState("")
-  const [ password, setPassword ] = useState("")
-  const [ message, setMessage ] = useState("");
+  componentDidMount() {
+    // If logged in and user navigates to Login page, should redirect them to dashboard
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/index");
+    }
+  }
 
-    const onLogin = async (event) => {
-       
-        event.preventDefault()
-        try {
-
-          //API post request
-          await Axios.post(`http://localhost:5000/login`, {username,password})
-
-          //redirect to the main page
-          props.history.push("/");
-
-        } catch (err) {
-            setMessage(err.response.data.message)
-
-        } finally {
-            setPassword("")
-        }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/index");
     }
 
-  return (
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
+
+  onChange = e => {
+    this.setState({ [e.target.id]: e.target.value });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    console.log(this.state)
+    const userData = {
+      username: this.state.username,
+      password: this.state.password
+    };
+
+    this.props.loginUser(userData);
+  };
+
+  render() {
+    const { errors } = this.state;
+
+    return (
     <Container fixed className={classes.root}>
       <CssBaseline />
       <Grid container>
@@ -57,34 +109,33 @@ export default function LoginForm(props) {
               </Typography>
 
               {/* display error message */}
-              {message ? <Alert severity='error'>{message}</Alert> : null}
+              {this.state.message ? <Alert severity='error'>{this.state.message}</Alert> : null}
 
-              <form className={classes.form} onSubmit={onLogin} noValidate>
+              <form className={classes.form} onSubmit={this.onSubmit} noValidate>
                 <TextField
                   variant="outlined"
                   margin="normal"
                   required
                   fullWidth
-                  id="userName"
+                  onChange={this.onChange}
+                  value={this.state.username}
+                  error={errors.username}
+                  id="username"
+                  type="username"
                   label="User name"
-                  name="userName"
-                  value={username}
-                  autoComplete="userName"
                   autoFocus={true}
-                  onChange={(event) => setUsername(event.target.value)}
                 />
                 <TextField
                   variant="outlined"
                   margin="normal"
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
+                  onChange={this.onChange}
+                  value={this.state.password}
+                  error={errors.password}
                   id="password"
-                  value={password}
-                  autoComplete="current-password"
-                  onChange={(event) => setPassword(event.target.value)}
+                  type="password"
+                  label="Password"
                 />
                 <Button
                   type="submit"
@@ -106,6 +157,23 @@ export default function LoginForm(props) {
             </div>
           </Grid>
         </Grid>
-      </Container>  
+      </Container> 
     );
+  }
 }
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);

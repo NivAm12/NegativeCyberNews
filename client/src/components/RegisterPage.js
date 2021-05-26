@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,37 +9,80 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import {useStyles} from '../styles/RegisterPage'
-import Axios from 'axios'
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { registerUser } from "../actions/authActions";
 
-export default function RegisterForm(props) {
-
-  const classes = useStyles();
-
-  const [ username, setUsername ] = useState("")
-  const [ password, setPassword ] = useState("")
-  const [ message, setMessage ] = useState("");
-
-  const onRegister = async (event) => {
-       
-    event.preventDefault()
-    try {
-        
-      //API post request
-      await Axios.post(`http://localhost:5000/register`, {username,password})
-
-      //redirect to 
-      props.history.push("/");
-
-    } catch (err) {
-        setMessage(err.response.data.message)
-    } finally {
-        setPassword("")
-    }
+const classes = {
+  paper: {
+    // marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    // margin: theme.spacing(1),
+    // backgroundColor: theme.palette.secondary.main,
+  },
+  input: {
+    backgroundColor: "white"
+  },
+  form: {
+    width: '100%',
+    // marginTop: theme.spacing(3)
+  },
+  submit: {
+    // margin: theme.spacing(3, 0, 2),
+  },
 }
+class Register extends Component {
+  constructor() {
+    super();
+    this.state = {
+      username: "",
+      password: "",
+      password2: "",
+      errors: {}
+    };
+  }
 
-  return (
-    <Container component="main" maxWidth="xs">
+  componentDidMount() {
+    // If logged in and user navigates to Register page, should redirect them to dashboard
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/index");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
+
+  onChange = e => {
+    this.setState({ [e.target.id]: e.target.value });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    const newUser = {
+      username: this.state.username,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+    console.log(newUser)
+
+    this.props.registerUser(newUser, this.props.history);
+  };
+
+  render() {
+    const { errors } = this.state;
+
+    return (
+      <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -48,20 +91,21 @@ export default function RegisterForm(props) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        {message ? <Alert severity='error'>{message}</Alert> : null}
-        <form className={classes.form} onSubmit={onRegister} noValidate>
+        {this.state.message ? <Alert severity='error'>{this.state.message}</Alert> : null}
+        <form className={classes.form} onSubmit={this.onSubmit} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="UserName"
+                onChange={this.onChange}
+                value={this.state.username}
+                error={errors.username}
+                id="username"
+                type="username"
                 label="User name"
-                name="UserName"
-                autoComplete="UserName"
                 className={classes.input}
-                onChange={(event) => setUsername(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -69,13 +113,27 @@ export default function RegisterForm(props) {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
+                onChange={this.onChange}
+                value={this.state.password}
+                error={errors.password}
                 id="password"
-                autoComplete="current-password"
+                type="password"
+                label="Password"
                 className={classes.input}
-                onChange={(event) => setPassword(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                onChange={this.onChange}
+                value={this.state.password2}
+                error={errors.password2}
+                id="password2"
+                type="password"
+                label="Password2"
+                className={classes.input}
               />
             </Grid>
           </Grid>
@@ -98,5 +156,22 @@ export default function RegisterForm(props) {
         </form>
       </div>
     </Container>
-  );
+    );
+  }
 }
+
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withRouter(Register));
