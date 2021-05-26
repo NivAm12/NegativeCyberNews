@@ -141,7 +141,7 @@ export default function LandingPage(props) {
 
         {/* search results text */}
         {!loading & (data.length !== 0) ? (
-          <h1>Search results for '{staticSearchTerm}'</h1>
+          <Typography className={classes.searchResults}>Search results for '{staticSearchTerm}'</Typography>
         ) : null}
 
         {/* no results text */}

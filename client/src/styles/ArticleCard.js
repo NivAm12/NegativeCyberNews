@@ -4,7 +4,7 @@ const useStyles = makeStyles({
     root: {
         minWidth: 275,
         marginBottom: "15px",
-        backgroundColor: "#ededed"
+        background : "linear-gradient(360deg, #D2D2D2 10%, white 78%)",
       },
       title: {
         fontSize: 14,
@@ -14,6 +14,9 @@ const useStyles = makeStyles({
       },
       readMore: {
           backgroundColor: "#c91818",
+          '&:hover':{
+            background: "#a80c0c"
+          },
           color: "white"
     }
   });
