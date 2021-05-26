@@ -36,7 +36,8 @@ const theme = createMuiTheme();
 
 const styles = {
   root: { 
-    margin: "100px auto"
+    margin: theme.spacing(5, 5, 0, 55),
+    
   },
   image: {
     backgroundImage: 'url(https://source.unsplash.com/collection/10629546)',

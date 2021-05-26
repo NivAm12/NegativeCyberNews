@@ -2,10 +2,14 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   container: {
-    padding: "0 0",
-    // position: "fixed",
+    //padding: "0 0",
+    //position: "sticky",
+    marginLeft: '130px',
+    marginTop: "20px",
+    marginBottom: "100px",
+    //height: "auto",
     // width: "1200px",
-    // height: "1200px",
+     //height: "1200px",
     // left: "50%",
     // top: "0%",
     // marginLeft: "-600px"
@@ -32,7 +36,7 @@ const useStyles = makeStyles({
   body: {
     padding: "30px 30px",
     background: "rgba(255,255,255,0.9)",
-    minHeight: "600px"
+    minHeight: "200px"
 
   },
   input: {
