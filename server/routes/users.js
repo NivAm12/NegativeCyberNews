@@ -1,90 +1,30 @@
-// const express = require("express");
-// const router = express.Router();
-// const passport = require("passport");
-// const User = require("../../models/user");
-
-// //GET USER
-// router.get("/user", (req, res) => {
-//   res.send({ user: req.user });
-// });
-
-// //LOGIN
-// router.post("/login", (req, res, next) => {
-//   console.log("aflkasfaklfajfkl")
-//   passport.authenticate("local", (err, user) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     if (!user) {
-//       return res.status(500).send({ message: "Invalid username or password!" });
-//     }
-//     req.logIn(user, (err) => {
-//       if (err) {
-//         return next(err);
-//       }
-//       return res.send({ user: req.user, message: "Successfully logged in!" });
-//     });
-//   })(req, res, next);
-// });
-
-// //LOGOUT
-// router.get("/logout", (req, res) => {
-//   try {
-//     req.logout();
-//     res.send({ message: "Successfully logged out!" });
-//   } catch (err) {
-//     return res.status(500);
-//   }
-// });
-
-// // REGISTER
-// router.post("/register", async (req, res) => {
-//   try {
-//     const { username, password } = req.body;
-//     const user = new User({ username });
-//     const registeredUser = await User.register(user, password);
-//     req.login(registeredUser, err =>{
-//       if (err) return next(err);
-//       res.send({ user: req.user, message: "Successfully signed up" });
-//     })
-//   } catch (err) {
-//     return res.status(500).send({ message: err.message });
-//   }
-// });
-
-// module.exports = router;
-
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
 
 // Load input validation
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
+const validateRegisterInput = require("../validation/register");
+const validateLoginInput = require("../validation/login");
 
 // Load User model
-const User = require("../../models/user");
+const User = require("../models/user");
 
 // @route POST api/users/register
 // @desc Register user
 // @access Public
 router.post("/register", (req, res) => {
   // Form validation
-  console.log(req.body)
   const { errors, isValid } = validateRegisterInput(req.body);
 
   // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  console.log("alallal")
   User.findOne({ username: req.body.username }).then(user => {
     if (user) {
       return res.status(400).json({ username: "Username already exists" });
     } else {
-      console.log("entered else")
       const newUser = new User({
         username: req.body.username,
         password: req.body.password
@@ -109,8 +49,8 @@ router.post("/register", (req, res) => {
 // @desc Login user and return JWT token
 // @access Public
 router.post("/login", (req, res) => {
+  
   // Form validation
-
   const { errors, isValid } = validateLoginInput(req.body);
 
   // Check validation
@@ -118,14 +58,14 @@ router.post("/login", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  const email = req.body.email;
+  const username = req.body.username;
   const password = req.body.password;
 
-  // Find user by email
-  User.findOne({ email }).then(user => {
+  // Find user by username
+  User.findOne({ username }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
+      return res.status(404).json({ usernamenotfound: "Username not found" });
     }
 
     // Check password
@@ -135,13 +75,13 @@ router.post("/login", (req, res) => {
         // Create JWT Payload
         const payload = {
           id: user.id,
-          name: user.name
+          username: user.username
         };
 
         // Sign token
         jwt.sign(
           payload,
-          keys.secretOrKey,
+          process.env.SECRET,
           {
             expiresIn: 31556926 // 1 year in seconds
           },

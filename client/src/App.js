@@ -6,7 +6,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 import { Provider } from "react-redux";
 import store from "./store";
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import setAuthToken from "./utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
@@ -47,38 +47,5 @@ class App extends Component {
     );
   }
 }
-
-
-// const App = () => {
-
-//   const [user, setUser] = useState(getUser())
-
-//   const getUser = async () => {
-//     const response = await Axios.get("http://localhost:5000/user")
-//     console.log(response.data.user)
-//     setUser(response.data.user)
-//   }
-//   useEffect(() => {
-//     await getUser()
-//   }, user)
-
-//   return (
-//     <div>
-//       <Switch>
-//         <Route exact path='/'
-//           render={(props) => user != null 
-//             ? <LandingPage {...props} />
-//             : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
-//         />
-//         <Route exact path='/login'
-//           render={(props) => user != null
-//             ? <Redirect to={{pathname: '/', state: {from: props.location}}} />
-//             : <LoginPage {...props} />}
-//         />
-//         <Route exact path='/register' render={(props) => (<RegisterPage {...props}/>)}/>
-//       </Switch>
-//     </div>
-//   )
-// }
 
 export default App;

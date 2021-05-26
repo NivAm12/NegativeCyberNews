@@ -3,6 +3,12 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles({
   container: {
     padding: "0 0",
+    // position: "fixed",
+    // width: "1200px",
+    // height: "1200px",
+    // left: "50%",
+    // top: "0%",
+    // marginLeft: "-600px"
   },
   header: {
     borderBottom: "3px solid rgba(0,0,0,1)",

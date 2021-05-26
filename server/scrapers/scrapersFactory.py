@@ -1,6 +1,8 @@
 from CyberNewsSearcher import CyberNewsSearcher
 import enum
 
+ARTICLES_LEN = 3
+
 class ScrapersOptions(enum.Enum):
     weLiveSecurity = 1
     threatPost = 2
@@ -26,9 +28,6 @@ def scrapersFactory(scraper: ScrapersOptions):
     return scraperToBuild
     
 
-##### SCRAPERS PARTS:
-articlesLen = 3
-
 # we live security:
 weLiveSecurityUrl = 'https://www.welivesecurity.com/?s='  
 weLiveSecurityAriclesClass = 'news-feed-item'
@@ -36,7 +35,7 @@ def weLiveSecurityArticlesMethod(articles):
     data = []
 
     #add articles
-    for i in range(min(articlesLen, len(articles))):
+    for i in range(min(ARTICLES_LEN, len(articles))):
         article = {
             "title": articles[i].h2.text.strip(),
             "description": articles[i].p.text.strip(),
@@ -55,7 +54,7 @@ def cyberNewsArticlesMethod(articles):
     data = []
 
     #add articles
-    for i in range(min(articlesLen, len(articles))):
+    for i in range(min(ARTICLES_LEN, len(articles))):
         article = {
             "title": articles[i].find(class_='jeg_post_title').text.strip(),
             "description": articles[i].find(class_='jeg_post_excerpt').p.text.strip(),
@@ -74,7 +73,7 @@ def threatPostArticlesMethod(articles):
     data = []
 
     #add articles
-    for i in range(min(articlesLen, len(articles))):
+    for i in range(min(ARTICLES_LEN, len(articles))):
         article = {
             "title": articles[i].h2.text.strip(),
             "description": articles[i].p.text.strip(),

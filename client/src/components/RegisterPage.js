@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Paper from '@material-ui/core/Paper';
 import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -13,36 +14,15 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../actions/authActions";
+import styles from '../styles/RegisterPage'
 
-const classes = {
-  paper: {
-    // marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    // margin: theme.spacing(1),
-    // backgroundColor: theme.palette.secondary.main,
-  },
-  input: {
-    backgroundColor: "white"
-  },
-  form: {
-    width: '100%',
-    // marginTop: theme.spacing(3)
-  },
-  submit: {
-    // margin: theme.spacing(3, 0, 2),
-  },
-}
 class Register extends Component {
   constructor() {
     super();
     this.state = {
       username: "",
       password: "",
-      password2: "",
+      passwordConfirm: "",
       errors: {}
     };
   }
@@ -71,9 +51,8 @@ class Register extends Component {
     const newUser = {
       username: this.state.username,
       password: this.state.password,
-      password2: this.state.password2
+      passwordConfirm: this.state.passwordConfirm
     };
-    console.log(newUser)
 
     this.props.registerUser(newUser, this.props.history);
   };
@@ -82,80 +61,80 @@ class Register extends Component {
     const { errors } = this.state;
 
     return (
-      <Container component="main" maxWidth="xs">
+      <Container fixed style={styles.root}>
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        {this.state.message ? <Alert severity='error'>{this.state.message}</Alert> : null}
-        <form className={classes.form} onSubmit={this.onSubmit} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                onChange={this.onChange}
-                value={this.state.username}
-                error={errors.username}
-                id="username"
-                type="username"
-                label="User name"
-                className={classes.input}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                onChange={this.onChange}
-                value={this.state.password}
-                error={errors.password}
-                id="password"
-                type="password"
-                label="Password"
-                className={classes.input}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                onChange={this.onChange}
-                value={this.state.password2}
-                error={errors.password2}
-                id="password2"
-                type="password"
-                label="Password2"
-                className={classes.input}
-              />
-            </Grid>
+      <Grid container>
+          <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+            <div style={styles.paper}>
+              <Avatar style={styles.avatar}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign up
+              </Typography>
+
+              {/* display error message */}
+              {/* {this.state.errors ? <Alert severity='error'>{this.state.errors}</Alert> : null} */}
+
+              <form style={styles.form} onSubmit={this.onSubmit} noValidate>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  onChange={this.onChange}
+                  value={this.state.username}
+                  error={errors.username}
+                  id="username"
+                  type="username"
+                  label="Username"
+                  autoFocus={true}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  onChange={this.onChange}
+                  value={this.state.password}
+                  error={errors.password}
+                  id="password"
+                  type="password"
+                  label="Password"
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  onChange={this.onChange}
+                  value={this.state.passwordConfirm}
+                  error={errors.passwordConfirm}
+                  id="passwordConfirm"
+                  type="password"
+                  label="Confirm password"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  style={styles.submit}
+                >
+                  Sign Up
+                </Button>
+                <Grid container>
+                  <Grid item>
+                    <Link href="/login" variant="body2">
+                      {"Already have an account? Sign in"}
+                    </Link>
+                  </Grid>
+                </Grid>
+              </form>
+            </div>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+        </Grid>
+      </Container> 
     );
   }
 }

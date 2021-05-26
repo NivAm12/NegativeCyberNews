@@ -13,38 +13,7 @@ import Container from '@material-ui/core/Container';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../actions/authActions";
-
-const classes = {
-  root: { 
-    margin: "100px auto"
-  },
-  image: {
-    backgroundImage: 'url(https://source.unsplash.com/collection/10629546)',
-    backgroundRepeat: 'no-repeat',
-    // backgroundColor:
-    // theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  paper: {
-    // margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    // margin: theme.spacing(1),
-    // backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    // marginTop: theme.spacing(1),
-  },
-  submit: {
-    // margin: theme.spacing(3, 0, 2),
-  },
-}
-
+import styles from '../styles/LoginPage'
 
 class Login extends Component {
   constructor() {
@@ -52,8 +21,7 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      errors: {},
-      message: ""
+      errors: {}
     };
   }
 
@@ -82,7 +50,6 @@ class Login extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    console.log(this.state)
     const userData = {
       username: this.state.username,
       password: this.state.password
@@ -95,13 +62,13 @@ class Login extends Component {
     const { errors } = this.state;
 
     return (
-    <Container fixed className={classes.root}>
+    <Container fixed style={styles.root}>
       <CssBaseline />
       <Grid container>
-        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        <Grid item xs={false} sm={4} md={7} style={styles.image} />
           <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-            <div className={classes.paper}>
-              <Avatar className={classes.avatar}>
+            <div style={styles.paper}>
+              <Avatar style={styles.avatar}>
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -109,9 +76,9 @@ class Login extends Component {
               </Typography>
 
               {/* display error message */}
-              {this.state.message ? <Alert severity='error'>{this.state.message}</Alert> : null}
+              {/* {this.state.errors ? <Alert severity='error'>{this.state.errors}</Alert> : null} */}
 
-              <form className={classes.form} onSubmit={this.onSubmit} noValidate>
+              <form style={styles.form} onSubmit={this.onSubmit} noValidate>
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -122,7 +89,7 @@ class Login extends Component {
                   error={errors.username}
                   id="username"
                   type="username"
-                  label="User name"
+                  label="Username"
                   autoFocus={true}
                 />
                 <TextField
@@ -142,7 +109,7 @@ class Login extends Component {
                   fullWidth
                   variant="contained"
                   color="primary"
-                  className={classes.submit}
+                  style={styles.submit}
                 >
                   Sign In
                 </Button>
