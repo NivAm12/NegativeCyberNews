@@ -2,17 +2,20 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   container: {
+    padding: '0 0',
+    minHeight: '100%',
+    background: 'rgba(255, 255, 255, 0.9)',
     //padding: "0 0",
     //position: "sticky",
-    marginLeft: '130px',
-    marginTop: "20px",
-    marginBottom: "100px",
-    //height: "auto",
-    // width: "1200px",
-     //height: "1200px",
-    // left: "50%",
-    // top: "0%",
-    // marginLeft: "-600px"
+    // marginLeft: '130px',
+    // marginTop: "20px",
+    // marginBottom: "100px",
+    // //height: "auto",
+    // // width: "1200px",
+    //  //height: "1200px",
+    // // left: "50%",
+    // // top: "0%",
+    // // marginLeft: "-600px"
   },
   header: {
     borderBottom: "3px solid rgba(0,0,0,1)",
@@ -35,8 +38,8 @@ const useStyles = makeStyles({
   },
   body: {
     padding: "30px 30px",
-    background: "rgba(255,255,255,0.9)",
-    minHeight: "200px"
+    // background: "rgba(255,255,255,0.9)",
+    // minHeight: "300px"
 
   },
   input: {

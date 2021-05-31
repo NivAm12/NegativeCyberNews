@@ -1,7 +1,10 @@
+html, .App, #root, body {
+  height: 100%;
+}
+
 body {
   background-image: linear-gradient(rgba(1, 1, 1, 1), rgba(209, 1, 1, 0.856));
   background-position: center;
   background-attachment: fixed;
   overflow-y: auto;
-
 }
