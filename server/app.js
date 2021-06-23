@@ -9,14 +9,14 @@ const mongoose = require("mongoose");
 const passport = require('passport')
 const cors = require('cors')
 
-//Routes paths
+// routes paths
 const searchRoute = require('./routes/search');
 const usersRoute = require("./routes/users");
 
-// Passport middleware
+// passport middleware
 app.use(passport.initialize());
 
-// Passport config
+// passport config
 require("./config/passport")(passport);
 
 // DB config
@@ -30,7 +30,7 @@ app.use(cors({origin: 'localhost:5000', credentials:true }));
 app.use(express.json({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')))
 
-// Routes
+// routes
 app.use("/users", usersRoute);
 app.use('/search', searchRoute);
 

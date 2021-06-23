@@ -1,36 +1,3 @@
-// import { createMuiTheme } from '@material-ui/core/styles';
-
-// const theme = createMuiTheme();
-
-// const styles = {
-//   root: { 
-//     margin: "100px auto",
-//     backgroundColor: "white"
-//   },
-//   paper: {
-//     marginTop: theme.spacing(8),
-//     display: 'flex',
-//     flexDirection: 'column',
-//     alignItems: 'center',
-//   },
-//   avatar: {
-//     margin: theme.spacing(1),
-//     backgroundColor: theme.palette.secondary.main,
-//   },
-//   input: {
-//     backgroundColor: "white"
-//   },
-//   form: {
-//     width: '100%',
-//     marginTop: theme.spacing(3)
-//   },
-//   submit: {
-//     margin: theme.spacing(3, 0, 2),
-//   },
-// }
-
-// export default styles
-
 import { createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme();
 

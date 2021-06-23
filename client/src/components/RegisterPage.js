@@ -30,7 +30,7 @@ class Register extends Component {
   componentDidMount() {
     // If logged in and user navigates to Register page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/index");
+      this.props.history.push("/");
     }
   }
 
@@ -74,7 +74,9 @@ class Register extends Component {
               </Typography>
 
               {/* display error message */}
-              {/* {this.state.errors ? <Alert severity='error'>{this.state.errors}</Alert> : null} */}
+              {Object.keys(errors).length ? 
+              <Alert severity='error'>{Object.values(errors).map(value => <div key={value}>{value}</div>)}</Alert> 
+              : null}
 
               <form style={styles.form} onSubmit={this.onSubmit} noValidate>
                 <TextField
