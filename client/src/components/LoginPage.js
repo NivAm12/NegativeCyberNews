@@ -26,17 +26,20 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    // If logged in and user navigates to Login page, should redirect them to dashboard
+    // if logged in and user navigates to Login page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/index");
+      this.props.history.push("/");
     }
   }
 
   componentWillReceiveProps(nextProps) {
+
+    // if logged in and user navigates to Login page, should redirect them to dashboard
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/index");
+      this.props.history.push("/");
     }
 
+    // set errors object if exists
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors
@@ -76,7 +79,7 @@ class Login extends Component {
               </Typography>
 
               {/* display error message */}
-              {/* {this.state.errors ? <Alert severity='error'>{this.state.errors}</Alert> : null} */}
+              {errors.message ? <Alert severity='error'>{errors.message}</Alert> : null}
 
               <form style={styles.form} onSubmit={this.onSubmit} noValidate>
                 <TextField

@@ -5,6 +5,7 @@ import urllib
 
 class CyberNewsSearcher():
 
+    # initialize the class article and method
     def __init__(self, url, articleClass, articlesMethod):
         self.__url = url
         self.__articleClass = articleClass
