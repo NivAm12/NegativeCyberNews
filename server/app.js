@@ -23,8 +23,8 @@ require("./config/passport")(passport);
 mongoose.connect(process.env.DB_URL, { 
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
 
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "Connection error:"));
+// if database connection has failed
+mongoose.connection.on("error", console.error.bind(console, "Connection error:"));
 
 app.use(cors({origin: 'localhost:5000', credentials:true }));
 app.use(express.json({ extended: true }));
@@ -34,8 +34,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use("/users", usersRoute);
 app.use('/search', searchRoute);
 
+// port config
 const port = process.env.PORT || 5000;
 
+// assign server listening on PORT
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })

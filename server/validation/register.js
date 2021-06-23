@@ -9,12 +9,12 @@ module.exports = function validateRegisterInput(data) {
   data.password = !isEmpty(data.password) ? data.password : "";
   data.passwordConfirm = !isEmpty(data.passwordConfirm) ? data.passwordConfirm : "";
 
-  // Username checks
+  // username checks
   if (Validator.isEmpty(data.username)) {
     errors.username = "Username field is required";
   }
 
-  // Password checks
+  // password checks
   if (Validator.isEmpty(data.password)) {
     errors.password = "Password field is required";
   }

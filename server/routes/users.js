@@ -20,9 +20,15 @@ router.post("/register", (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
+
+  // try to find the user in the database
   User.findOne({ username: req.body.username }).then(user => {
+
+    // if found
     if (user) {
       return res.status(400).json({ username: "Username already exists" });
+
+      // user not found, register permitted
     } else {
       const newUser = new User({
         username: req.body.username,
@@ -101,4 +107,5 @@ router.post("/login", (req, res) => {
   });
 });
 
+// export the router
 module.exports = router;
