@@ -6,45 +6,32 @@ const express = require("express")
 const app = express();
 const path = require('path');
 const mongoose = require("mongoose");
-const session = require('express-session')
-const routes = require('./routes/user');
-const searchRoute = require('./routes/search');
 const passport = require('passport')
-const localStrategy = require('passport-local')
-const User = require('./models/user')
 const cors = require('cors')
 
-const secret = process.env.SECRET || 'thisshouldbeabettersecret';
+//Routes paths
+const searchRoute = require('./routes/search');
+const usersRoute = require("./routes/users");
 
-//session configuartion
-app.use(session({
-    secret,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 3,
-        maxAge: 1000 * 60 * 60 * 24 * 3,
-    }
-}))
+// Passport middleware
+app.use(passport.initialize());
 
-//passport configuration
-app.use(passport.initialize())
-app.use(passport.session())
-passport.use(new localStrategy(User.authenticate()))
-passport.serializeUser(User.serializeUser())
-passport.deserializeUser(User.deserializeUser())
+// Passport config
+require("./config/passport")(passport);
 
-//connect to the database
+// DB config
 mongoose.connect(process.env.DB_URL, { 
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
-    
+
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection error:"));
 
 app.use(cors({origin: 'localhost:5000', credentials:true }));
 app.use(express.json({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')))
-app.use('/', routes);
+
+// Routes
+app.use("/users", usersRoute);
 app.use('/search', searchRoute);
 
 const port = process.env.PORT || 5000;

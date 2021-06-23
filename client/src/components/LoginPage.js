@@ -1,5 +1,4 @@
-import Axios from 'axios';
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,45 +10,65 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Alert from '@material-ui/lab/Alert';
 import Container from '@material-ui/core/Container';
-import {useStyles} from '../styles/LoginPage'
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../actions/authActions";
+import styles from '../styles/LoginPage'
 
-Axios.defaults.withCredentials = true
+class Login extends Component {
+  constructor() {
+    super();
+    this.state = {
+      username: "",
+      password: "",
+      errors: {}
+    };
+  }
 
-export default function LoginForm(props) {
+  componentDidMount() {
+    // If logged in and user navigates to Login page, should redirect them to dashboard
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/index");
+    }
+  }
 
-  const classes = useStyles();
-
-  const [ username, setUsername ] = useState("")
-  const [ password, setPassword ] = useState("")
-  const [ message, setMessage ] = useState("");
-
-    const onLogin = async (event) => {
-       
-        event.preventDefault()
-        try {
-
-          //API post request
-          await Axios.post(`http://localhost:5000/login`, {username,password})
-
-          //redirect to the main page
-          props.history.push("/");
-
-        } catch (err) {
-            setMessage(err.response.data.message)
-
-        } finally {
-            setPassword("")
-        }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/index");
     }
 
-  return (
-    <Container fixed className={classes.root}>
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
+
+  onChange = e => {
+    this.setState({ [e.target.id]: e.target.value });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    const userData = {
+      username: this.state.username,
+      password: this.state.password
+    };
+
+    this.props.loginUser(userData);
+  };
+
+  render() {
+    const { errors } = this.state;
+
+    return (
+    <Container fixed style={styles.root}>
       <CssBaseline />
       <Grid container>
-        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        <Grid item xs={false} sm={4} md={7} style={styles.image} />
           <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-            <div className={classes.paper}>
-              <Avatar className={classes.avatar}>
+            <div style={styles.paper}>
+              <Avatar style={styles.avatar}>
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -57,41 +76,40 @@ export default function LoginForm(props) {
               </Typography>
 
               {/* display error message */}
-              {message ? <Alert severity='error'>{message}</Alert> : null}
+              {/* {this.state.errors ? <Alert severity='error'>{this.state.errors}</Alert> : null} */}
 
-              <form className={classes.form} onSubmit={onLogin} noValidate>
+              <form style={styles.form} onSubmit={this.onSubmit} noValidate>
                 <TextField
                   variant="outlined"
                   margin="normal"
                   required
                   fullWidth
-                  id="userName"
-                  label="User name"
-                  name="userName"
-                  value={username}
-                  autoComplete="userName"
+                  onChange={this.onChange}
+                  value={this.state.username}
+                  error={errors.username}
+                  id="username"
+                  type="username"
+                  label="Username"
                   autoFocus={true}
-                  onChange={(event) => setUsername(event.target.value)}
                 />
                 <TextField
                   variant="outlined"
                   margin="normal"
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
+                  onChange={this.onChange}
+                  value={this.state.password}
+                  error={errors.password}
                   id="password"
-                  value={password}
-                  autoComplete="current-password"
-                  onChange={(event) => setPassword(event.target.value)}
+                  type="password"
+                  label="Password"
                 />
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
-                  className={classes.submit}
+                  style={styles.submit}
                 >
                   Sign In
                 </Button>
@@ -106,6 +124,23 @@ export default function LoginForm(props) {
             </div>
           </Grid>
         </Grid>
-      </Container>  
+      </Container> 
     );
+  }
 }
+
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);

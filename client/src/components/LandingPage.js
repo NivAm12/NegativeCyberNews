@@ -12,11 +12,13 @@ import ArticleCard from "./ArticleCard";
 import { CircularProgress } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { useStyles } from "../styles/LandingPage";
+import { logoutUser } from "../actions/authActions";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-export default function LandingPage(props) {
+function LandingPage(props) {
 
   const classes = useStyles();
-
   const [searchTerm, setSearchTerm] = useState("");
   const [staticSearchTerm, setStaticSearchTerm] = useState("");
   const [data, setData] = useState([]);
@@ -64,18 +66,11 @@ export default function LandingPage(props) {
   const onLogout = async (event) => {
     //prevent refresh
     event.preventDefault();
-
-    try {
-      //API Get request
-      await Axios.get(`http://localhost:5000/logout`);
-    } finally {
-      //redirect to login page
-      props.history.push("/login");
-    }
+    props.logoutUser();
   };
 
   return (
-    <Container fixed className={classes.container}>
+    <Container className={classes.container}>
       <div className={classes.header}>
         <Button
           onClick={onLogout}
@@ -169,3 +164,16 @@ export default function LandingPage(props) {
     </Container>
   );
 }
+LandingPage.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(LandingPage);
