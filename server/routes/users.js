@@ -50,7 +50,7 @@ router.post("/register", (req, res) => {
   });
 });
 
-// login POST reuuest
+// login POST request
 router.post("/login", (req, res) => {
   
   // form validation
